@@ -6,7 +6,7 @@
 
 # Przykłady użycia
 
-ESWL pozwala na prace w dwóch trybach: **administratora** oraz **użytkownika**. Aplikacja przechodzi w odpowiedni tryb pracy dzięki sprawdzeniu roli użytkownika po zalogowaniu.
+SWiZLE pozwala na prace w dwóch trybach: **administratora** oraz **użytkownika**. Aplikacja przechodzi w odpowiedni tryb pracy dzięki sprawdzeniu roli użytkownika po zalogowaniu.
 
 **Tryb administratora umożliwia:**
 
