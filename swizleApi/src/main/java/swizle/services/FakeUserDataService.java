@@ -1,14 +1,16 @@
 package swizle.services;
 
 import org.springframework.stereotype.Service;
+import swizle.models.Session;
 import swizle.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service("fakeUserService")
-public class FakeUserDataService implements IModifiableDataService<User> {
+public class FakeUserDataService implements IUserDataService {
     private final ArrayList<User> users = new ArrayList<>();
+    private final ArrayList<Session> sessions = new ArrayList<>();
 
     @Override
     public List<User> getItems() {
@@ -45,6 +47,34 @@ public class FakeUserDataService implements IModifiableDataService<User> {
     @Override
     public void deleteItem(long id) {
         users.removeIf(u -> u.getId() == id);
+    }
+
+    @Override
+    public void startSession(long userId) throws IllegalArgumentException {
+        if(getItemById(userId) == null)
+            throw new IllegalArgumentException("User with the given ID doesn't exist.");
+
+        sessions.forEach(s -> {
+            if(s.getUserId() == userId)
+                throw new IllegalArgumentException("Session for the given user already exists.");
+        });
+
+        sessions.add(new Session(userId));
+    }
+
+    @Override
+    public void endSession(long userId) {
+        Session session = null;
+
+        for(Session s : sessions) {
+            if(s.getUserId() == userId)
+                session = s;
+        }
+
+        if(session == null)
+            throw new IllegalArgumentException("Session for the given user doesn't exist.");
+
+        sessions.remove(session);
     }
 
     private long getUniqueId() {
