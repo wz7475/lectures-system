@@ -41,9 +41,10 @@ public class UserController {
     @PostMapping("/api/user/login")
     public void logIn(String name, String password) {
 
-        userDataService.startSession(userDataService.getUserByNameAndPassword(name, password).getId());
+        userDataService.startSession(userDataService.getUserByNameAndPassword(name, password));
     }
 
+    @PostMapping("/api/user/logout")
     public void logOut(UUID sessionKey) {
         userDataService.endSession(sessionKey);
     }

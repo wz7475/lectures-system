@@ -67,16 +67,11 @@ public class FakeUserDataService implements IUserDataService {
     }
 
     @Override
-    public void startSession(long userId) throws IllegalArgumentException {
-        if(getItemById(userId) == null)
-            throw new IllegalArgumentException("User with the given ID doesn't exist.");
+    public void startSession(User user) throws IllegalArgumentException {
+        if(!users.contains(user))
+            throw new IllegalArgumentException("Given user doesn't exist, unable to start new session.");
 
-        sessions.forEach(s -> {
-            if(s.getUserId() == userId)
-                throw new IllegalArgumentException("Session for the given user already exists.");
-        });
-
-        sessions.add(new Session(userId));
+        sessions.add(new Session(user.getId()));
     }
 
     @Override
