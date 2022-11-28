@@ -6,10 +6,16 @@ public class User {
     private String password;
     private boolean isAdmin;
 
+    public User(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+
     public User(long id, String name, String password) {
         this.id = id;
         this.name = name;
         this.password = password;
+        isAdmin = false;
     }
 
     public User(long id, String name, String password, boolean isAdmin) {

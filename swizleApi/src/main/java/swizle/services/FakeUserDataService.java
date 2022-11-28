@@ -3,11 +3,13 @@ package swizle.services;
 import org.springframework.stereotype.Service;
 import swizle.models.Session;
 import swizle.models.User;
+import swizle.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-@Service("fakeUserService")
+@Service(Constants.FakeUserServiceQualifier)
 public class FakeUserDataService implements IUserDataService {
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Session> sessions = new ArrayList<>();
@@ -50,6 +52,21 @@ public class FakeUserDataService implements IUserDataService {
     }
 
     @Override
+    public List<Session> getSessions() {
+        return sessions;
+    }
+
+    @Override
+    public User getUserByNameAndPassword(String name, String password) {
+        for(User user : users) {
+            if(user.getName().equals(name) && user.getPassword().equals(password))
+                return user;
+        }
+
+        return null;
+    }
+
+    @Override
     public void startSession(long userId) throws IllegalArgumentException {
         if(getItemById(userId) == null)
             throw new IllegalArgumentException("User with the given ID doesn't exist.");
@@ -63,16 +80,16 @@ public class FakeUserDataService implements IUserDataService {
     }
 
     @Override
-    public void endSession(long userId) {
+    public void endSession(UUID sessionId) {
         Session session = null;
 
         for(Session s : sessions) {
-            if(s.getUserId() == userId)
+            if(s.getId() == sessionId)
                 session = s;
         }
 
         if(session == null)
-            throw new IllegalArgumentException("Session for the given user doesn't exist.");
+            throw new IllegalArgumentException("Session with the given key doesn't exist.");
 
         sessions.remove(session);
     }
