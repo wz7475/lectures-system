@@ -41,7 +41,6 @@ public class UserController {
 
     @PostMapping("/api/user/login")
     public void logIn(String name, String password) {
-
         userDataService.startSession(userDataService.getUserByNameAndPassword(name, password));
     }
 
