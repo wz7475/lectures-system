@@ -30,7 +30,12 @@ public class FakeUserDataService implements IUserDataService {
     }
 
     @Override
-    public void addItem(User item) {
+    public void addItem(User item) throws IllegalArgumentException {
+        for(User user : users) {
+            if(user.getName().equals(item.getName()))
+                throw new IllegalArgumentException("User with the given name already exists.");
+        }
+
         users.add(new User(getUniqueId(), item.getName(), item.getPassword(), item.isAdmin()));
     }
 
@@ -71,6 +76,11 @@ public class FakeUserDataService implements IUserDataService {
         if(!users.contains(user))
             throw new IllegalArgumentException("Given user doesn't exist, unable to start new session.");
 
+        for(Session s : sessions) {
+            if(s.getUserId() == user.getId())
+                throw new IllegalArgumentException("Session for the given user has already been created.");
+        }
+
         sessions.add(new Session(user.getId()));
     }
 
@@ -79,7 +89,7 @@ public class FakeUserDataService implements IUserDataService {
         Session session = null;
 
         for(Session s : sessions) {
-            if(s.getId() == sessionId)
+            if(s.getId().equals(sessionId))
                 session = s;
         }
 

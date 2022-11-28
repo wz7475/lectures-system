@@ -2,6 +2,7 @@ package swizle.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,8 +45,8 @@ public class UserController {
         userDataService.startSession(userDataService.getUserByNameAndPassword(name, password));
     }
 
-    @PostMapping("/api/user/logout")
-    public void logOut(UUID sessionKey) {
-        userDataService.endSession(sessionKey);
+    @DeleteMapping("/api/user/logout")
+    public void logOut(String sessionKey) {
+        userDataService.endSession(UUID.fromString(sessionKey));
     }
 }
