@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import swizle.models.TestModel;
+import swizle.services.IDataService;
 import swizle.services.TestService;
 
 import java.util.List;
@@ -13,10 +14,10 @@ import java.util.List;
 @RestController
 public class TestController {
     @Qualifier("testService")
-    private final TestService service;
+    private final IDataService<TestModel> service;
 
     @Autowired
-    public TestController(TestService service) {
+    public TestController(IDataService<TestModel> service) {
         this.service = service;
     }
 
