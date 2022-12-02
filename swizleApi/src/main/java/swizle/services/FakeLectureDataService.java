@@ -61,7 +61,12 @@ public class FakeLectureDataService implements ILectureDataService {
     }
 
     @Override
-    public void signUpForLecture(long lectureId, long userId) {
+    public void signUpForLecture(long lectureId, long userId) throws IllegalArgumentException {
+        for(UserLecture userLecture : userLectures) {
+            if(userLecture.getUserId() == lectureId && userLecture.getLectureId() == lectureId)
+                throw new IllegalArgumentException("User already signed up for requested lecture.");
+        }
+
         userLectures.add(new UserLecture(Helpers.getUniqueId(userLectures), userId, lectureId));
     }
 

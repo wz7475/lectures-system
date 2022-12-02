@@ -73,6 +73,16 @@ public class FakeUserDataService implements IUserDataService {
     }
 
     @Override
+    public User getUserBySessionKey(UUID sessionKey) {
+        for(Session session : sessions) {
+            if(session.getId().equals(sessionKey))
+                return getItemById(session.getUserId());
+        }
+
+        return null;
+    }
+
+    @Override
     public void startSession(User user) throws IllegalArgumentException {
         if(!users.contains(user))
             throw new IllegalArgumentException("Given user doesn't exist, unable to start new session.");
