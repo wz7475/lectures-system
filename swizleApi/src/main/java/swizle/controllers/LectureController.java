@@ -31,7 +31,7 @@ public class LectureController {
         return lectureDataService.getItems();
     }
 
-    @GetMapping("api/lectures")
+    @GetMapping("api/lectures/lecture")
     public Lecture getLectureById(long id) {
         return lectureDataService.getItemById(id);
     }
@@ -43,18 +43,18 @@ public class LectureController {
         );
     }
 
-    @PostMapping("api/lectures")
-    public void postLecture(Lecture lecture, String sessionKey) {
+    @PostMapping(value = "api/lectures", headers = {"content-type=application/json"})
+    public void postLecture(@RequestBody Lecture lecture, String sessionKey) {
         if(isAdmin(sessionKey))
             lectureDataService.addItem(lecture);
     }
 
-    @PutMapping("/api/lectures")
-    public void putLecture(long lectureId, Lecture newLectureData, String sessionKey) {
+    @PutMapping(value = "/api/lectures", headers = {"content-type=application/json"})
+    public void putLecture(long lectureId, @RequestBody Lecture lecture, String sessionKey) {
         User requestedUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
 
         if(requestedUser.isAdmin())
-            lectureDataService.editItem(lectureId, newLectureData);
+            lectureDataService.editItem(lectureId, lecture);
     }
 
     @DeleteMapping("api/lectures")

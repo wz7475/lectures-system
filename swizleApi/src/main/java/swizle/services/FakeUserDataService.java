@@ -15,6 +15,10 @@ public class FakeUserDataService implements IUserDataService {
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Session> sessions = new ArrayList<>();
 
+    public FakeUserDataService() {
+        users.add(new User(1, "admin", "12345", true));
+    }
+
     @Override
     public List<User> getItems() {
         return users;
@@ -83,7 +87,7 @@ public class FakeUserDataService implements IUserDataService {
     }
 
     @Override
-    public void startSession(User user) throws IllegalArgumentException {
+    public UUID startSession(User user) throws IllegalArgumentException {
         if(!users.contains(user))
             throw new IllegalArgumentException("Given user doesn't exist, unable to start new session.");
 
@@ -92,7 +96,9 @@ public class FakeUserDataService implements IUserDataService {
                 throw new IllegalArgumentException("Session for the given user has already been created.");
         }
 
-        sessions.add(new Session(user.getId()));
+        Session newSession = new Session(user.getId());
+        sessions.add(newSession);
+        return newSession.getId();
     }
 
     @Override
