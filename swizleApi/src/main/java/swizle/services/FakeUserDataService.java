@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import swizle.models.Session;
 import swizle.models.User;
 import swizle.utils.Constants;
+import swizle.utils.Helpers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class FakeUserDataService implements IUserDataService {
                 throw new IllegalArgumentException("User with the given name already exists.");
         }
 
-        users.add(new User(users.size() + 1, item.getName(), item.getPassword(), item.isAdmin()));
+        users.add(new User(Helpers.getUniqueId(users), item.getName(), item.getPassword(), item.isAdmin()));
     }
 
     @Override

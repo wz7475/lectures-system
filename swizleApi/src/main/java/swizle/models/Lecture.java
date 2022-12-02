@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 
-public class Lecture {
+public class Lecture implements IModel {
     private long id;
     private String name;
     private DayOfWeek dayOfWeek;

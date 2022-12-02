@@ -1,6 +1,6 @@
 package swizle.models;
 
-public class User {
+public class User implements IModel {
     private long id;
     private String name;
     private String password;
