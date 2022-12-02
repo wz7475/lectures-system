@@ -36,7 +36,7 @@ public class FakeUserDataService implements IUserDataService {
                 throw new IllegalArgumentException("User with the given name already exists.");
         }
 
-        users.add(new User(getUniqueId(), item.getName(), item.getPassword(), item.isAdmin()));
+        users.add(new User(users.size() + 1, item.getName(), item.getPassword(), item.isAdmin()));
     }
 
     @Override
@@ -97,9 +97,5 @@ public class FakeUserDataService implements IUserDataService {
             throw new IllegalArgumentException("Session with the given key doesn't exist.");
 
         sessions.remove(session);
-    }
-
-    private long getUniqueId() {
-        return users.size() + 1;
     }
 }
