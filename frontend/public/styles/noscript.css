@@ -1,0 +1,22 @@
+.no-script {
+    height: calc(100vh - 16px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+.no-script-title
+{
+    padding: 16px;
+    font-size: 32px;
+}
+.no-script-details
+{
+    font-size: 24px;
+}
+
+.no-script a {
+    color: #0588e0;
+}
