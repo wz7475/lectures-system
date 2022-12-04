@@ -82,6 +82,11 @@ public class LectureController {
     }
 
     private boolean isAdmin(String sessionKey) {
-        return userDataService.getUserBySessionKey(UUID.fromString(sessionKey)).isAdmin();
+        User user =  userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
+
+        if(user == null)
+            throw new NullPointerException("There is no active session for the given session key.");
+
+        return user.isAdmin();
     }
 }
