@@ -3,13 +3,13 @@ package swizle.models.dto;
 public class LectureDto {
     private long id;
     private String name;
-    private byte dayOfWeek;
-    private byte beginTimeHour;
-    private byte beginTimeMinute;
-    private byte durationHours;
-    private byte durationMinutes;
+    private int dayOfWeek;
+    private int beginTimeHour;
+    private int beginTimeMinute;
+    private int durationHours;
+    private int durationMinutes;
 
-    public LectureDto(long id, String name, byte dayOfWeek, byte beginTimeHour, byte beginTimeMinute, byte durationHours, byte durationMinutes) {
+    public LectureDto(long id, String name, int dayOfWeek, int beginTimeHour, int beginTimeMinute, int durationHours, int durationMinutes) {
         this.id = id;
         this.name = name;
         this.dayOfWeek = dayOfWeek;
@@ -35,43 +35,43 @@ public class LectureDto {
         this.name = name;
     }
 
-    public byte getDayOfWeek() {
+    public int getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(byte dayOfWeek) {
+    public void setDayOfWeek(int dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public byte getBeginTimeHour() {
+    public int getBeginTimeHour() {
         return beginTimeHour;
     }
 
-    public void setBeginTimeHour(byte beginTimeHour) {
+    public void setBeginTimeHour(int beginTimeHour) {
         this.beginTimeHour = beginTimeHour;
     }
 
-    public byte getBeginTimeMinute() {
+    public int getBeginTimeMinute() {
         return beginTimeMinute;
     }
 
-    public void setBeginTimeMinute(byte beginTimeMinute) {
+    public void setBeginTimeMinute(int beginTimeMinute) {
         this.beginTimeMinute = beginTimeMinute;
     }
 
-    public byte getDurationHours() {
+    public int getDurationHours() {
         return durationHours;
     }
 
-    public void setDurationHours(byte durationHours) {
+    public void setDurationHours(int durationHours) {
         this.durationHours = durationHours;
     }
 
-    public byte getDurationMinutes() {
+    public int getDurationMinutes() {
         return durationMinutes;
     }
 
-    public void setDurationMinutes(byte durationMinutes) {
+    public void setDurationMinutes(int durationMinutes) {
         this.durationMinutes = durationMinutes;
     }
 }
