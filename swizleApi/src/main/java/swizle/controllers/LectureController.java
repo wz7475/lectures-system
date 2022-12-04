@@ -81,7 +81,7 @@ public class LectureController {
         lectureDataService.optOutOfLecture(lectureId, currentUser.getId());
     }
 
-    private boolean isAdmin(String sessionKey) {
+    private boolean isAdmin(String sessionKey) throws NullPointerException {
         User user =  userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
 
         if(user == null)
