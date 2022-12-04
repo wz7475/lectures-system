@@ -3,6 +3,7 @@ package swizle.services;
 import org.springframework.stereotype.Service;
 import swizle.models.Lecture;
 import swizle.models.UserLecture;
+import swizle.services.interfaces.ILectureDataService;
 import swizle.utils.Constants;
 import swizle.utils.Helpers;
 

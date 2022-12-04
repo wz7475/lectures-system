@@ -1,4 +1,4 @@
-package swizle.services;
+package swizle.services.interfaces;
 
 import swizle.models.Session;
 import swizle.models.User;

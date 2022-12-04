@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import swizle.models.Session;
 import swizle.models.User;
-import swizle.services.IUserDataService;
+import swizle.services.interfaces.IUserDataService;
 import swizle.utils.Constants;
 
 import java.util.List;

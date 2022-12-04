@@ -3,6 +3,7 @@ package swizle.services;
 import org.springframework.stereotype.Service;
 import swizle.models.Session;
 import swizle.models.User;
+import swizle.services.interfaces.IUserDataService;
 import swizle.utils.Constants;
 import swizle.utils.Helpers;
 
