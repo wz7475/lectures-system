@@ -2,10 +2,10 @@ package swizle.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import swizle.models.Session;
 import swizle.models.User;
 import swizle.services.interfaces.IUserDataService;
@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@ResponseBody
 public class UserController {
     @Qualifier(Constants.FakeUserServiceQualifier)
     private final IUserDataService userDataService;
@@ -31,7 +32,18 @@ public class UserController {
 
     @GetMapping("/api/user/isadmin")
     public boolean isActiveUserAdmin(String sessionKey) {
-        User activeUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
+        User activeUser;
+
+        try {
+            activeUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
+        }
+        catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or empty session key.");
+        }
+
+        if(activeUser == null)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Log in required to perform this action.");
+
         return activeUser.isAdmin();
     }
 
