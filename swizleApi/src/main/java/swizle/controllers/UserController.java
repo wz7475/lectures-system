@@ -29,6 +29,12 @@ public class UserController {
         return userDataService.getItems();
     }
 
+    @GetMapping("/api/user/isadmin")
+    public boolean isActiveUserAdmin(String sessionKey) {
+        User activeUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
+        return activeUser.isAdmin();
+    }
+
     @GetMapping("/api/user/sessions")
     public List<Session> getSessions() {
         return userDataService.getSessions();
