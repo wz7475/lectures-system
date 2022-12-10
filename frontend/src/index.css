@@ -1,10 +1,55 @@
+@import "./fonts/icons/style.css";
+
 body {
     margin: 0;
+    color: white;
     font-family: "Oxygen", "Roboto", "Arial", "Helvetica Neue", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: #222;
 }
 
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+input, button {
+    border: 0;
+    margin: 0;
+    outline: 0;
+    padding: 16px 20px;
+    font: inherit;
+    color: white;
+    background: #333;
+    box-sizing: content-box;
+    transition: all 250ms ease;
+}
+input:focus, button:focus {
+    outline: 3px dashed #ee4540;
+}
+
+button {
+    color: white;
+    cursor: pointer;
+    background: #4d5966;
+}
+
+button:hover {
+    background: #576574;
+}
+
+button.blue {
+    background: #047ac8;
+}
+
+button.blue:hover {
+    background: #0589e1;
+}
+
+button.red {
+    background: #ee4540;
+}
+
+button.red:hover {
+    background: #fe5550;
 }

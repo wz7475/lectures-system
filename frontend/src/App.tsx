@@ -4,6 +4,7 @@ import {AppDispatch, AppState} from "./store/store";
 import LoginPage from "./containers/LoginPage";
 import {logoutAsync} from "./store/reducers/authReducer";
 import EState from "./store/models/common/state";
+import "./App.css";
 
 const App: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
