@@ -12,4 +12,7 @@ public abstract class Constants {
 
     public static final String FakeOfferServiceQualifier = "fakeOfferService";
     public static final String OfferServiceQualifier = "offerService";
+
+    public static final String FakeOpinionServiceQualifier = "fakeOpinionService";
+    public static final String OpinionServiceQualifier = "opinionService";
 }

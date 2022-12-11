@@ -2,14 +2,14 @@ package swizle.models;
 
 import java.util.Date;
 
-public class Opinion {
-    private int id;
-    private int lectureId;
-    private int userId;
+public class Opinion implements IModel {
+    private long id;
+    private long lectureId;
+    private long userId;
     private Date createdAt;
     private String content;
 
-    public Opinion(int id, int lectureId, int userId, Date createdAt, String content) {
+    public Opinion(long id, long lectureId, long userId, Date createdAt, String content) {
         this.id = id;
         this.lectureId = lectureId;
         this.userId = userId;
@@ -17,7 +17,7 @@ public class Opinion {
         this.content = content;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -25,19 +25,19 @@ public class Opinion {
         this.id = id;
     }
 
-    public int getLectureId() {
+    public long getLectureId() {
         return lectureId;
     }
 
-    public void setLectureId(int lectureId) {
+    public void setLectureId(long lectureId) {
         this.lectureId = lectureId;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
