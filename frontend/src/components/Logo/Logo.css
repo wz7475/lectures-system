@@ -1,0 +1,17 @@
+.logo-container {
+    width: 150px;
+    height: 220px;
+    margin: 0 auto;
+}
+
+.logo-container > img {
+    width: 100%;
+    height: fit-content;
+    margin: 0 auto 24px;
+}
+
+.logo-title {
+    font-size: 24px;
+    font-family: cursive;
+    text-align: center;
+}

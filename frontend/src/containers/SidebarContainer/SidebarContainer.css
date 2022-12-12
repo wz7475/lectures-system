@@ -1,0 +1,19 @@
+.sidebar-container {
+    float: left;
+    width: 300px;
+    height: 100vh;
+    background: #282828;
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+
+.sidebar-container-logo {
+    margin: 48px 24px 24px;
+}
+
+.sidebar-container-navigation {
+    margin: 0 auto;
+    padding: 16px;
+}

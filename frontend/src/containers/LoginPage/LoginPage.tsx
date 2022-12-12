@@ -1,12 +1,12 @@
 import React, {FormEvent, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppState} from "../store/store";
-import {loginAsync} from "../store/reducers/authReducer";
-import EState from "../store/models/common/state";
-import APIError from "../store/models/common/apiError";
-import logo from "../logo.svg";
+import {AppDispatch, AppState} from "../../store/store";
+import {loginAsync} from "../../store/reducers/authReducer";
+import EState from "../../store/models/common/state";
+import APIError from "../../store/models/common/apiError";
+import logo from "../../logo.svg";
 import "./LoginPage.css";
-import Loading from "../components/Loading";
+import Loading from "../../components/Loading/Loading";
 
 const LoginPage: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
