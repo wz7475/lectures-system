@@ -3,9 +3,10 @@ import "./LecturesPage.css";
 
 const LecturesPage: React.FC = () => {
     return (
-        <div>
-            Lectures page;
-        </div>
+        <>
+            <div className="page-title">Lectures</div>
+            <div className="page-content">Lectures page content</div>
+        </>
     );
 }
 

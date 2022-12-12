@@ -7,8 +7,10 @@ const ContentContainer: React.FC = () => {
     return (
         <div className="content-container">
             <Routes>
-                <Route path="/*" element={<Navigate to="/lectures"/>}/>
-                <Route index path="/lectures" element={<LecturesPage/>}/>
+                <Route path="/" element={<Navigate to="/lectures"/>}/>
+                <Route path="/lectures" element={<LecturesPage/>}>
+                    <Route index element={<div></div>}/>
+                </Route>
             </Routes>
         </div>
     );
