@@ -10,6 +10,6 @@ public interface IUserDataService extends IModifiableDataService<User> {
     public List<Session> getSessions();
     public User getUserByNameAndPassword(String name, String password);
     public User getUserBySessionKey(UUID sessionKey);
-    public UUID startSession(User user);
+    public Session startSession(User user);
     public void endSession(UUID sessionId);
 }

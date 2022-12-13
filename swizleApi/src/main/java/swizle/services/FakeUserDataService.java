@@ -42,7 +42,7 @@ public class FakeUserDataService implements IUserDataService {
                 throw new IllegalArgumentException("User with the given name already exists.");
         }
 
-        users.add(new User(Helpers.getUniqueId(users), item.getName(), item.getPassword(), item.isAdmin()));
+        users.add(new User(Helpers.getUniqueId(users), item.getName(), item.getPassword()));
     }
 
     @Override
@@ -88,18 +88,19 @@ public class FakeUserDataService implements IUserDataService {
     }
 
     @Override
-    public UUID startSession(User user) throws IllegalArgumentException {
-        if(!users.contains(user))
+    public Session startSession(User user) throws IllegalArgumentException {
+        User requestedUser = getUserByNameAndPassword(user.getName(), user.getPassword());
+        if(requestedUser == null)
             throw new IllegalArgumentException("Given user doesn't exist, unable to start new session.");
 
         for(Session s : sessions) {
-            if(s.getUserId() == user.getId())
+            if(s.getUserId() == requestedUser.getId())
                 throw new IllegalArgumentException("Session for the given user has already been created.");
         }
 
-        Session newSession = new Session(user.getId());
+        Session newSession = new Session(requestedUser.getId());
         sessions.add(newSession);
-        return newSession.getId();
+        return newSession;
     }
 
     @Override

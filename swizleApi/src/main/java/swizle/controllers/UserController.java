@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import swizle.models.Session;
 import swizle.models.User;
+import swizle.models.dto.SessionResponseDto;
+import swizle.models.dto.UserDto;
 import swizle.services.interfaces.IUserDataService;
 import swizle.utils.Constants;
 
 import java.util.List;
 import java.util.UUID;
+
+import swizle.utils.dtoConverters.UserDtoConverter;
 
 @RestController
 @ResponseBody
@@ -52,16 +56,16 @@ public class UserController {
         return userDataService.getSessions();
     }
 
-    @PostMapping("/api/user/register")
-    public void register(String name, String password) {
-        userDataService.addItem(new User(name, password));
+    @PostMapping(value = "/api/user/register", headers = { "content-type=application/json" })
+    public void register(@RequestBody UserDto userCredentials) {
+        userDataService.addItem(UserDtoConverter.toModel(userCredentials));
     }
 
-    @PostMapping("/api/user/login")
-    public String logIn(String name, String password) {
-        return userDataService
-                .startSession(userDataService.getUserByNameAndPassword(name, password))
-                .toString();
+    @PostMapping(value = "/api/user/login", headers = { "content-type=application/json" })
+    public SessionResponseDto logIn(@RequestBody UserDto userCredentials) {
+        Session startedSession = userDataService.startSession(UserDtoConverter.toModel(userCredentials));
+        return new SessionResponseDto(startedSession.getId(),
+                userDataService.getUserByNameAndPassword(userCredentials.getName(), userCredentials.getPassword()).isAdmin());
     }
 
     @DeleteMapping("/api/user/logout")
