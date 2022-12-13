@@ -7,6 +7,9 @@ import swizle.services.interfaces.ILectureDataService;
 import swizle.utils.Constants;
 import swizle.utils.Helpers;
 
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,16 @@ import java.util.List;
 public class FakeLectureDataService implements ILectureDataService {
     private final ArrayList<Lecture> lectures = new ArrayList<>();
     private final ArrayList<UserLecture> userLectures = new ArrayList<>();
+
+    public FakeLectureDataService() {
+        lectures.add(new Lecture(
+                1,
+                "J. angielski",
+                DayOfWeek.MONDAY,
+                LocalTime.of(12, 15),
+                Duration.ofHours(1))
+        );
+    }
 
     @Override
     public List<Lecture> getItems() {
