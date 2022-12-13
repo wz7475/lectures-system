@@ -23,7 +23,7 @@ const lecturesSlice = createSlice({
             .addCase(fetchLectures.fulfilled, (state, action) => {
                 state.state = EState.Complete;
                 state.error = null;
-                state.lectures = action.payload.lectures;
+                state.lectures = action.payload;
             })
             .addCase(fetchLectures.rejected, (state, action) => {
                 state.state = EState.Failed;
@@ -55,12 +55,11 @@ const lecturesSlice = createSlice({
             })
 });
 
-export const fetchLectures = createAsyncThunk<{ lectures: Lecture[] }, void, { rejectValue: APIError }>(
+export const fetchLectures = createAsyncThunk<Lecture[], void, { rejectValue: APIError }>(
     "lectures/fetchLectures",
     async (_, thunkAPI) => {
         try {
-            // @TODO: Change API url
-            const response = await fetch("/fakeApi/lectures.json");
+            const response = await fetch("/api/lectures");
 
             if (response.status !== 200) {
                 return thunkAPI.rejectWithValue({
@@ -120,9 +119,18 @@ export const signUpLecture = createAsyncThunk<{ success: boolean }, singUpLectur
 export const addLecture = createAsyncThunk<Lecture, Lecture, { rejectValue: APIError }>(
     "lectures/addLecture",
     async (lecture, thunkAPI) => {
+        const state = thunkAPI.getState() as { auth: { sessionKey: string }};
+
         try {
             // @TODO: Change API url
-            const response = await fetch("/fakeApi/addLecture.json");
+            const response = await fetch("/api/lectures?sessionKey=" + state.auth.sessionKey, {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(lecture)
+            });
 
             if (response.status !== 200) {
                 return thunkAPI.rejectWithValue({

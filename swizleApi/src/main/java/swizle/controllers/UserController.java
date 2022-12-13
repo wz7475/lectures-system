@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/api/user/logout", headers = { "content-type=application/json" })
-    public void logOut(@RequestBody SessionResponseDto sessionKey) {
-        userDataService.endSession(sessionKey.getSessionKey());
+    public void logOut(String sessionKey) {
+        userDataService.endSession(UUID.fromString(sessionKey));
     }
 }

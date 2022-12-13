@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import swizle.models.Lecture;
 import swizle.models.User;
 import swizle.models.dto.LectureDto;
 import swizle.services.interfaces.ILectureDataService;
@@ -12,6 +13,9 @@ import swizle.services.interfaces.IUserDataService;
 import swizle.utils.Constants;
 import swizle.utils.dtoConverters.LectureDtoConverter;
 
+import java.time.DayOfWeek;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +32,9 @@ public class LectureController {
     public LectureController(ILectureDataService lectureDataService, IUserDataService userDataService) {
         this.lectureDataService = lectureDataService;
         this.userDataService = userDataService;
+        lectureDataService.addItem(new Lecture(
+                1, "Angielski", DayOfWeek.FRIDAY, LocalTime.now(), Duration.ofMinutes(30)
+        ));
     }
 
     @GetMapping("api/lectures")

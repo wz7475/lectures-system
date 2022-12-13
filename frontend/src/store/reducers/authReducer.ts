@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import AuthState from "../models/authState";
 import EState from "../models/common/state";
 import APIError from "../models/common/apiError";
+import {AppState} from "../store";
 
 const initialState: AuthState = {
     state: EState.Idle,
@@ -26,7 +27,7 @@ const authSlice = createSlice({
                 state.error = null;
                 state.isAuthenticated = true;
                 state.sessionKey = action.payload.sessionKey;
-                state.isAdmin = action.payload.isAdmin;
+                state.isAdmin = action.payload.admin;
             })
             .addCase(loginAsync.rejected, (state, action) => {
                 state.state = EState.Failed;
@@ -50,7 +51,7 @@ const authSlice = createSlice({
 
 export type loginReturns = {
     sessionKey: string,
-    isAdmin: boolean
+    admin: boolean
 }
 
 export type loginParams = {
@@ -62,9 +63,12 @@ export const loginAsync = createAsyncThunk<loginReturns, loginParams, { rejectVa
     "auth/loginAsync",
     async (credentials: loginParams, thunkAPI) => {
         try {
-            // @TODO: Change API url
-            const response = await fetch("/fakeApi/login.json", {
+            const response = await fetch("/api/user/login", {
                 method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify(credentials)
             });
 
@@ -103,12 +107,14 @@ export const logoutAsync = createAsyncThunk<void, void, { rejectValue: APIError 
     "auth/logoutAsync",
     async (arg, thunkAPI) => {
         try {
-            const state = thunkAPI.getState() as AuthState;
+            const state = thunkAPI.getState() as { auth: { sessionKey: string }};
 
-            // @TODO: Change API url
-            const response = await fetch("./fakeApi/logout.json", {
+            const response = await fetch("./api/user/logout?sessionKey=" + state.auth.sessionKey, {
                 method: "DELETE",
-                body: JSON.stringify({ sessionKey: state.sessionKey})
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
             });
 
             if (response.status !== 200) {
