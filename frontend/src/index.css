@@ -35,6 +35,12 @@ input:focus, button:focus, a:focus {
     outline: 3px dashed #ee4540;
 }
 
+button[disabled] {
+    color: #aaa !important;
+    background: #444 !important;
+    cursor: default !important;
+}
+
 button {
     color: white;
     cursor: pointer;

@@ -7,7 +7,8 @@ const initialState: AuthState = {
     state: EState.Idle,
     error: null,
     isAuthenticated: false,
-    sessionKey: null
+    sessionKey: null,
+    isAdmin: false
 };
 
 const authSlice = createSlice({
@@ -25,6 +26,7 @@ const authSlice = createSlice({
                 state.error = null;
                 state.isAuthenticated = true;
                 state.sessionKey = action.payload.sessionKey;
+                state.isAdmin = action.payload.isAdmin;
             })
             .addCase(loginAsync.rejected, (state, action) => {
                 state.state = EState.Failed;
@@ -46,12 +48,17 @@ const authSlice = createSlice({
             })
 });
 
+export type loginReturns = {
+    sessionKey: string,
+    isAdmin: boolean
+}
+
 export type loginParams = {
     name: string,
     password: string
 }
 
-export const loginAsync = createAsyncThunk<{ sessionKey: string }, loginParams, { rejectValue: APIError }>(
+export const loginAsync = createAsyncThunk<loginReturns, loginParams, { rejectValue: APIError }>(
     "auth/loginAsync",
     async (credentials: loginParams, thunkAPI) => {
         try {
