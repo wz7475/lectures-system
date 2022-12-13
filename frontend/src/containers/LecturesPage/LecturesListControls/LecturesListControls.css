@@ -1,0 +1,7 @@
+.lectures-list-controls {
+    display: grid;
+    align-items: center;
+    justify-content: right;
+    grid-gap: 16px;
+    grid-auto-flow: column;
+}

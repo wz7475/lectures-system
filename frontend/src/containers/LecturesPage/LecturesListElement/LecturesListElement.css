@@ -1,0 +1,18 @@
+.lectures-list-element {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    margin: 16px 0;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.lectures-list-element-name {
+    font-size: 20px;
+}
+
+.lectures-list-element-controls {
+    display: flex;
+    grid-gap: 16px;
+}

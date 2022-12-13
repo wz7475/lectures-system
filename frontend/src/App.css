@@ -1,0 +1,9 @@
+.app {
+    text-align: center;
+}
+
+.temporary-disabled {
+    color: #ee4540;
+    font-size: 12px;
+    padding: 4px;
+}

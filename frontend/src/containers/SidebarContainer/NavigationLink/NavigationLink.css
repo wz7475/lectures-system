@@ -1,0 +1,23 @@
+.navigation-link {
+    display: block;
+    padding: 24px;
+    margin: 24px auto;
+    border-radius: 2px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 250ms ease;
+}
+
+.navigation-link.active {
+    background: #047ac8;
+}
+
+.navigation-link.disabled {
+    color: #aaa;
+}
+
+.navigation-link:not(.active):not(.disabled):hover {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.125);
+}
+

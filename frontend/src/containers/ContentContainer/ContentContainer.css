@@ -1,0 +1,7 @@
+.content-container {
+    float: left;
+    width: calc(100% - 348px);
+    height: calc(100vh - 48px);
+    max-height: calc(100vh - 48px);
+    padding: 24px;
+}
