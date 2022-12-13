@@ -68,8 +68,8 @@ public class UserController {
                 userDataService.getUserByNameAndPassword(userCredentials.getName(), userCredentials.getPassword()).isAdmin());
     }
 
-    @DeleteMapping("/api/user/logout")
-    public void logOut(String sessionKey) {
-        userDataService.endSession(UUID.fromString(sessionKey));
+    @DeleteMapping(value = "/api/user/logout", headers = { "content-type=application/json" })
+    public void logOut(@RequestBody SessionResponseDto sessionKey) {
+        userDataService.endSession(sessionKey.getSessionKey());
     }
 }
