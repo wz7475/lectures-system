@@ -31,8 +31,17 @@ public class FakeLectureDataService implements ILectureDataService {
     }
 
     @Override
-    public void addItem(Lecture item) {
-        lectures.add(new Lecture(Helpers.getUniqueId(lectures), item.getName(), item.getDayOfWeek(), item.getBeginTime(), item.getDuration()));
+    public Lecture addItem(Lecture item) {
+        Lecture lectureToAdd = new Lecture(
+                Helpers.getUniqueId(lectures),
+                item.getName(),
+                item.getDayOfWeek(),
+                item.getBeginTime(),
+                item.getDuration()
+        );
+
+        lectures.add(lectureToAdd);
+        return lectureToAdd;
     }
 
     @Override

@@ -2,7 +2,9 @@ package swizle.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import swizle.models.User;
 import swizle.models.dto.LectureDto;
 import swizle.services.interfaces.ILectureDataService;
@@ -49,14 +51,18 @@ public class LectureController {
         return response;
     }
 
-    @PostMapping(value = "api/lectures", headers = {"content-type=application/json"})
-    public void postLecture(@RequestBody LectureDto lecture, String sessionKey) {
+    @PostMapping(value = "api/lectures", headers = { "content-type=application/json" })
+    public LectureDto postLecture(@RequestBody LectureDto lecture, String sessionKey) {
         if(isAdmin(sessionKey))
-            lectureDataService.addItem(LectureDtoConverter.toModel(lecture));
+            return LectureDtoConverter.toDto(
+                    lectureDataService.addItem(LectureDtoConverter.toModel(lecture))
+            );
+
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Only admin can add lectures.");
     }
 
-    @PutMapping(value = "/api/lectures", headers = {"content-type=application/json"})
-    public void putLecture(long lectureId, @RequestBody LectureDto lecture, String sessionKey) {
+    @PutMapping(value = "/api/lectures", headers = { "content-type=application/json" })
+    public void putLecture(long lectureId, @RequestBody LectureDto lecture, String sessionKey) throws ResponseStatusException {
         User requestedUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
 
         if(requestedUser.isAdmin())

@@ -36,13 +36,15 @@ public class FakeUserDataService implements IUserDataService {
     }
 
     @Override
-    public void addItem(User item) throws IllegalArgumentException {
+    public User addItem(User item) throws IllegalArgumentException {
         for(User user : users) {
             if(user.getName().equals(item.getName()))
                 throw new IllegalArgumentException("User with the given name already exists.");
         }
 
-        users.add(new User(Helpers.getUniqueId(users), item.getName(), item.getPassword()));
+        User userToAdd = new User(Helpers.getUniqueId(users), item.getName(), item.getPassword());
+        users.add(userToAdd);
+        return userToAdd;
     }
 
     @Override

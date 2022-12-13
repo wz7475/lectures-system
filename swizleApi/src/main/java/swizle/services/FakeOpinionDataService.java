@@ -65,8 +65,17 @@ public class FakeOpinionDataService implements IOpinionDataService {
     }
 
     @Override
-    public void addItem(Opinion opinion) {
-        opinions.add(new Opinion(Helpers.getUniqueId(opinions), opinion.getLectureId(), opinion.getUserId(), opinion.getCreatedAt(), opinion.getContent()));
+    public Opinion addItem(Opinion opinion) {
+        Opinion opinionToAdd = new Opinion(
+                Helpers.getUniqueId(opinions),
+                opinion.getLectureId(),
+                opinion.getUserId(),
+                opinion.getCreatedAt(),
+                opinion.getContent()
+        );
+
+        opinions.add(opinionToAdd);
+        return opinionToAdd;
     }
 
     @Override
