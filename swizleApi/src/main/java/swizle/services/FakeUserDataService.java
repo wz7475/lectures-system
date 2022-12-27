@@ -93,12 +93,7 @@ public class FakeUserDataService implements IUserDataService {
     public Session startSession(User user) throws IllegalArgumentException {
         User requestedUser = getUserByNameAndPassword(user.getName(), user.getPassword());
         if(requestedUser == null)
-            throw new IllegalArgumentException("Given user doesn't exist, unable to start new session.");
-
-        for(Session s : sessions) {
-            if(s.getUserId() == requestedUser.getId())
-                throw new IllegalArgumentException("Session for the given user has already been created.");
-        }
+            throw new IllegalArgumentException("Invalid user credentials.");
 
         Session newSession = new Session(requestedUser.getId());
         sessions.add(newSession);
