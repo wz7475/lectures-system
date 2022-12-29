@@ -3,6 +3,7 @@ package swizle.models;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Lecture implements IModel {
     private long id;
@@ -57,5 +58,13 @@ public class Lecture implements IModel {
 
     public void setDuration(Duration duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lecture lecture = (Lecture) o;
+        return Objects.equals(name, lecture.name) && dayOfWeek == lecture.dayOfWeek && Objects.equals(beginTime, lecture.beginTime) && Objects.equals(duration, lecture.duration);
     }
 }
