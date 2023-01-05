@@ -20,14 +20,13 @@ import java.util.UUID;
 
 @RestController
 public class OpinionController {
-    @Qualifier(Constants.FakeOpinionServiceQualifier)
     private final IOpinionDataService opinionDataService;
-
-    @Qualifier(Constants.FakeUserServiceQualifier)
     private final IUserDataService userDataService;
 
     @Autowired
-    public OpinionController(IOpinionDataService opinionDataService, IUserDataService userDataService) {
+    public OpinionController(
+            @Qualifier(Constants.FakeOpinionServiceQualifier) IOpinionDataService opinionDataService,
+            @Qualifier(Constants.UserServiceQualifier) IUserDataService userDataService) {
         this.opinionDataService = opinionDataService;
         this.userDataService = userDataService;
     }

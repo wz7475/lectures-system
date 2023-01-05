@@ -20,11 +20,10 @@ import swizle.utils.dtoConverters.UserDtoConverter;
 @RestController
 @ResponseBody
 public class UserController {
-    @Qualifier(Constants.FakeUserServiceQualifier)
     private final IUserDataService userDataService;
 
     @Autowired
-    public UserController(IUserDataService userDataService) {
+    public UserController(@Qualifier(Constants.UserServiceQualifier) IUserDataService userDataService) {
         this.userDataService = userDataService;
     }
 

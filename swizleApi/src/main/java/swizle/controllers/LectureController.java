@@ -20,14 +20,13 @@ import java.util.UUID;
 
 @RestController
 public class LectureController {
-    @Qualifier(Constants.FakeLectureServiceQualifier)
     private final ILectureDataService lectureDataService;
-
-    @Qualifier(Constants.FakeUserServiceQualifier)
     private final IUserDataService userDataService;
 
     @Autowired
-    public LectureController(ILectureDataService lectureDataService, IUserDataService userDataService) {
+    public LectureController(
+            @Qualifier(Constants.FakeLectureServiceQualifier) ILectureDataService lectureDataService,
+            @Qualifier(Constants.UserServiceQualifier) IUserDataService userDataService) {
         this.lectureDataService = lectureDataService;
         this.userDataService = userDataService;
     }

@@ -1,10 +1,19 @@
 package swizle.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "Users")
 public class User implements IModel {
+    @Id
     private long id;
     private String name;
     private String password;
     private boolean isAdmin;
+
+    public User() {}
 
     public User(String name, String password) {
         this.name = name;
