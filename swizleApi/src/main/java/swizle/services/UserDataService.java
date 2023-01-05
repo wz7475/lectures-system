@@ -14,10 +14,12 @@ import java.util.UUID;
 @Service(Constants.UserServiceQualifier)
 public class UserDataService implements IUserDataService {
     private final IUserRepository userRepository;
+    //private final ISessionRepository sessionRepository;
 
     @Autowired
-    public UserDataService(IUserRepository repository) {
-        userRepository = repository;
+    public UserDataService(IUserRepository userRepository) {
+        this.userRepository = userRepository;
+        //this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -27,22 +29,38 @@ public class UserDataService implements IUserDataService {
 
     @Override
     public User getItemById(long id) {
-        return null;
+        return userRepository.getReferenceById(id);
     }
 
     @Override
     public User addItem(User item) {
-        return null;
+        try {
+            return userRepository.save(item);
+        }
+        catch (Exception e) {
+            throw new IllegalArgumentException("User with the given name already exists.");
+        }
     }
 
     @Override
     public void editItem(long id, User newData) {
+        User userToModify = userRepository.getReferenceById(id);
 
+        userToModify.setName(newData.getName());
+        userToModify.setPassword(newData.getPassword());
+        userToModify.setAdmin(newData.isAdmin());
+
+        try {
+            userRepository.save(userToModify);
+        }
+        catch(Exception e) {
+            throw new IllegalArgumentException("User with given name already exists");
+        }
     }
 
     @Override
     public void deleteItem(long id) {
-
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -52,7 +70,7 @@ public class UserDataService implements IUserDataService {
 
     @Override
     public User getUserByNameAndPassword(String name, String password) {
-        return null;
+        return userRepository.findByNameAndPassword(name, password);
     }
 
     @Override
