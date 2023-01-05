@@ -158,6 +158,18 @@ public class LectureController {
         }
     }
 
+    @GetMapping("/api/lectures/recent")
+    public List<Long> getRecentLectures(long lectureId) {
+        List<Long> result = new ArrayList<>();
+        List<Lecture> lectures = lectureDataService.getItems();
+        lectures.forEach(lecture -> {
+            if (lecture.getId() > lectureId)
+                result.add(lecture.getId());
+        });
+
+        return result;
+    }
+
     private boolean isAdmin(String sessionKey) throws NullPointerException {
         User user =  userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
 
