@@ -1,13 +1,13 @@
 package swizle.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Users")
 public class User implements IModel {
     @Id
+    @SequenceGenerator(name = "id_sequence", sequenceName = "id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")
     private long id;
     private String name;
     private String password;
