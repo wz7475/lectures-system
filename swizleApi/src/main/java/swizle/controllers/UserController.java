@@ -3,7 +3,6 @@ package swizle.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import swizle.models.Session;
@@ -57,20 +56,36 @@ public class UserController {
     }
 
     @PostMapping(value = "/api/user/register", headers = { "content-type=application/json" })
-    public void register(@RequestBody UserDto userCredentials) {
-        userDataService.addItem(UserDtoConverter.toModel(userCredentials));
+    public void register(@RequestBody UserDto userCredentials) throws ResponseStatusException {
+        try {
+            userDataService.addItem(UserDtoConverter.toModel(userCredentials));
+        }
+        catch(IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
+        }
     }
 
-    @CrossOrigin(origins = "*")
     @PostMapping(value = "/api/user/login", headers = { "content-type=application/json" })
-    public SessionResponseDto logIn(@RequestBody UserDto userCredentials) {
-        Session startedSession = userDataService.startSession(UserDtoConverter.toModel(userCredentials));
+    public SessionResponseDto logIn(@RequestBody UserDto userCredentials) throws ResponseStatusException {
+        Session startedSession;
+        try {
+            startedSession = userDataService.startSession(UserDtoConverter.toModel(userCredentials));
+        }
+        catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+
         return new SessionResponseDto(startedSession.getId(),
                 userDataService.getUserByNameAndPassword(userCredentials.getName(), userCredentials.getPassword()).isAdmin());
     }
 
     @DeleteMapping(value = "/api/user/logout", headers = { "content-type=application/json" })
-    public void logOut(String sessionKey) {
-        userDataService.endSession(UUID.fromString(sessionKey));
+    public void logOut(@RequestBody SessionResponseDto sessionKey) throws ResponseStatusException {
+        try {
+            userDataService.endSession(sessionKey.getSessionKey());
+        }
+        catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 }
