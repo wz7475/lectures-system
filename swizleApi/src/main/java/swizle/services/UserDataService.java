@@ -1,9 +1,11 @@
 package swizle.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swizle.models.Session;
 import swizle.models.User;
+import swizle.repositories.ISessionRepository;
 import swizle.repositories.IUserRepository;
 import swizle.services.interfaces.IUserDataService;
 import swizle.utils.Constants;
@@ -14,12 +16,12 @@ import java.util.UUID;
 @Service(Constants.UserServiceQualifier)
 public class UserDataService implements IUserDataService {
     private final IUserRepository userRepository;
-    //private final ISessionRepository sessionRepository;
+    private final ISessionRepository sessionRepository;
 
     @Autowired
-    public UserDataService(IUserRepository userRepository) {
+    public UserDataService(IUserRepository userRepository, ISessionRepository sessionRepository) {
         this.userRepository = userRepository;
-        //this.sessionRepository = sessionRepository;
+        this.sessionRepository = sessionRepository;
     }
 
     @Override
@@ -65,7 +67,7 @@ public class UserDataService implements IUserDataService {
 
     @Override
     public List<Session> getSessions() {
-        return null;
+        return sessionRepository.findAll();
     }
 
     @Override
@@ -75,16 +77,28 @@ public class UserDataService implements IUserDataService {
 
     @Override
     public User getUserBySessionKey(UUID sessionKey) {
+        if(sessionRepository.findById(sessionKey).isPresent())
+            return sessionRepository.findById(sessionKey).get().getUser();
+
         return null;
     }
 
     @Override
     public Session startSession(User user) {
-        return null;
+        User requestedUser = getUserByNameAndPassword(user.getName(), user.getPassword());
+
+        if(requestedUser == null)
+            throw new IllegalArgumentException("Invalid user credentials.");
+
+        return sessionRepository.save(new Session(requestedUser));
     }
 
     @Override
     public void endSession(UUID sessionId) {
+        if (!sessionRepository.existsById(sessionId))
+            throw new IllegalArgumentException("Session with the given key doesn't exist.");
 
+        Session session = sessionRepository.getReferenceById(sessionId);
+        sessionRepository.delete(session);
     }
 }
