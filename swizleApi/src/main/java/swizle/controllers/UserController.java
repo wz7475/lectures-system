@@ -61,6 +61,7 @@ public class UserController {
         userDataService.addItem(UserDtoConverter.toModel(userCredentials));
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping(value = "/api/user/login", headers = { "content-type=application/json" })
     public SessionResponseDto logIn(@RequestBody UserDto userCredentials) {
         Session startedSession = userDataService.startSession(UserDtoConverter.toModel(userCredentials));

@@ -1,54 +1,54 @@
 import React, {FormEvent, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppState} from "../../store/store";
-import {loginAsync} from "../../store/reducers/authReducer";
-import EState from "../../store/models/common/state";
-import APIError from "../../store/models/common/apiError";
+import {LoginRequest, useLoginMutation} from "../../store/services/api";
+import Loading from "../../components/Loading/Loading";
 import logo from "../../logo.svg";
 import "./LoginPage.css";
-import Loading from "../../components/Loading/Loading";
 
 const LoginPage: React.FC = () => {
-    const dispatch: AppDispatch = useDispatch();
-    const [name, setName] = useState('');
-    const [password, setPassword] = useState('');
-    const state = useSelector<AppState, EState>((state) => state.auth.state);
-    const error = useSelector<AppState, APIError | null | undefined>((state) => state.auth.error);
+    const [formState, setFormState] = useState<LoginRequest>({
+        name: "",
+        password: ""
+    });
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const [login, {isLoading, isError, error}] = useLoginMutation();
+
+    const handleChange = ({target: {name, value}}: React.ChangeEvent<HTMLInputElement>) =>
+        setFormState((prev) => ({...prev, [name]: value}));
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        dispatch(loginAsync({name, password}))
+        await login(formState)
     }
 
     return (
         <div className="login-page">
             <div className="login-page-content">
                 <div className="login-logo">
-                    <img src={logo} alt="SWiZZLE Logo"/>
+                    <img src={logo} alt="SWiZLE Logo"/>
                 </div>
-                <div className="login-title">SWiZZLE</div>
-                {state === EState.Pending ? (
+                <div className="login-title">SWiZLE</div>
+                {isLoading ? (
                     <div className="login-form-loading">
                         <Loading/>
                     </div>
                 ) : (
                     <form className="login-form" onSubmit={handleSubmit}>
-                        <input type="text"
-                               value={name}
+                        <input name="name"
+                               type="text"
                                placeholder="Name"
-                               onChange={(event) => setName(event.target.value)}
+                               onChange={handleChange}
                         />
-                        <input type="password"
-                               value={password}
+                        <input name="password"
+                               type="password"
                                placeholder="Password"
-                               onChange={(event) => setPassword(event.target.value)}
+                               onChange={handleChange}
                         />
 
                         <button className="login-form-button blue" type="submit">Login</button>
 
-                        {state === EState.Failed && error !== null && error !== undefined && (
+                        {isError && (
                             <div className="login-form-error">
-                                {error.message}
+                                Error
                             </div>
                         )}
 

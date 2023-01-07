@@ -1,21 +1,18 @@
 import React from "react";
-import {useSelector} from "react-redux";
-import {AppState} from "./store/store";
 import LoginPage from "./containers/LoginPage/LoginPage";
-import EState from "./store/models/common/state";
 import "./App.css";
 import SidebarContainer from "./containers/SidebarContainer/SidebarContainer";
 import ContentContainer from "./containers/ContentContainer/ContentContainer";
+import {useLoginMutation} from "./store/services/api";
 
 const App: React.FC = () => {
-    const isAuthenticated = useSelector<AppState, boolean>((state) => state.auth.isAuthenticated);
-    const authState = useSelector<AppState, EState>((state) => state.auth.state);
+    const [, {data, isLoading, isSuccess}] = useLoginMutation();
 
-    if (!isAuthenticated) {
+    if (!isSuccess) {
         return <LoginPage/>;
     }
 
-    if (authState === EState.Pending) {
+    if (isLoading) {
         return (
             <div>Logout...</div>
         );
