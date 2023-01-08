@@ -25,7 +25,7 @@ public class LectureController {
 
     @Autowired
     public LectureController(
-            @Qualifier(Constants.FakeLectureServiceQualifier) ILectureDataService lectureDataService,
+            @Qualifier(Constants.LectureServiceQualifier) ILectureDataService lectureDataService,
             @Qualifier(Constants.UserServiceQualifier) IUserDataService userDataService) {
         this.lectureDataService = lectureDataService;
         this.userDataService = userDataService;
@@ -51,6 +51,9 @@ public class LectureController {
     @GetMapping("api/lectures/user")
     public List<LectureDto> getLecturesForUser(String sessionKey) {
         try {
+            User requestedUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
+            if (requestedUser == null)
+                throwInvalidSessionKey();
             final ArrayList<LectureDto> response = new ArrayList<>();
             lectureDataService.getLecturesForUser(
                     userDataService.getUserBySessionKey(UUID.fromString(sessionKey)).getId()

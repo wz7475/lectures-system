@@ -72,15 +72,18 @@ public class UserDataService implements IUserDataService {
 
     @Override
     public User getUserByNameAndPassword(String name, String password) {
+        if(!userRepository.existsByNameAndPassword(name, password))
+            return null;
+
         return userRepository.findByNameAndPassword(name, password);
     }
 
     @Override
     public User getUserBySessionKey(UUID sessionKey) {
-        if(sessionRepository.findById(sessionKey).isPresent())
-            return sessionRepository.findById(sessionKey).get().getUser();
+        if(!sessionRepository.existsById(sessionKey))
+            return null;
 
-        return null;
+        return sessionRepository.getReferenceById(sessionKey).getUser();
     }
 
     @Override
