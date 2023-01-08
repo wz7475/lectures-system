@@ -1,14 +1,21 @@
 import React from "react";
 import "./LogoutButton.css";
 import {AppDispatch} from "../../../store/store";
-import {useDispatch} from "react-redux";
-import {logoutAsync} from "../../../store/reducers/authReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {useLogoutMutation} from "../../../store/services/api";
+import {removeCredentials, selectSessionKey} from "../../../store/features/authSlice";
+import {useNavigate} from "react-router-dom";
 
 const LogoutButton: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
+    const navigate = useNavigate();
+    const [logout] = useLogoutMutation();
+    const sessionKey = useSelector(selectSessionKey);
 
-    const handleLogout = () => {
-        dispatch(logoutAsync());
+    const handleLogout = async () => {
+        await logout({sessionKey: sessionKey}).unwrap();
+        dispatch(removeCredentials());
+        navigate("/");
     }
 
     return (

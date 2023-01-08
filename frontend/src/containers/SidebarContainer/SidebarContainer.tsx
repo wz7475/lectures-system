@@ -12,7 +12,9 @@ const SidebarContainer: React.FC = () => {
             </div>
             <div className="sidebar-container-navigation">
                 <NavigationLink title="Lectures" to="/lectures"/>
-                <NavigationLink title="Opinions" to="/opinions" disabled/>
+                <NavigationLink title="Opinions" to="/opinions"/>
+                <NavigationLink title="Switch" to="/switches"/>
+                <NavigationLink title="Profile" to="/profile"/>
             </div>
             <div className="sidebar-container-logout">
                 <LogoutButton/>

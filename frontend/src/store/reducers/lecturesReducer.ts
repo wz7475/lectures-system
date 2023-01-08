@@ -2,7 +2,7 @@ import LecturesState from "../models/lecturesState";
 import EState from "../models/common/state";
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import APIError from "../models/common/apiError";
-import Lecture from "../models/lectures/Lecture";
+import Lecture from "../models/Lecture";
 
 const initialState: LecturesState = {
     state: EState.Idle,

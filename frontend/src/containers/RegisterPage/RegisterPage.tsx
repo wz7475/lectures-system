@@ -1,35 +1,33 @@
 import React, {FormEvent, useState} from "react";
-import {LoginRequest, useLoginMutation} from "../../store/services/api";
+import {LoginRequest, useRegisterMutation} from "../../store/services/api";
 import Loading from "../../components/Loading/Loading";
 import logo from "../../logo.svg";
-import "./LoginPage.css";
+import "./../LoginPage/LoginPage.css";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import APIErrorData from "../../store/models/common/apiErrorData";
-import {NavLink} from "react-router-dom";
-import {setCredentials} from "../../store/features/authSlice";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../store/store";
+import {NavLink, useNavigate} from "react-router-dom";
 
-const LoginPage: React.FC = () => {
-    const dispatch: AppDispatch = useDispatch();
+const RegisterPage: React.FC = () => {
+    const navigate = useNavigate();
 
     const [formState, setFormState] = useState<LoginRequest>({
         name: "",
         password: ""
     });
 
-    const [login, {isLoading, isError, error}] = useLoginMutation();
+    const [register, {isLoading, isError, error}] = useRegisterMutation();
 
     const handleChange = ({target: {name, value}}: React.ChangeEvent<HTMLInputElement>) =>
         setFormState((prev) => ({...prev, [name]: value}));
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const authData = await login(formState).unwrap();
-        dispatch(setCredentials(authData));
+        await register(formState);
+        navigate("/");
     }
 
     let errorMessage;
+
     if (error !== undefined && "status" in error) {
         let err = (error as FetchBaseQueryError);
         let errData = (err.data as APIErrorData);
@@ -66,7 +64,7 @@ const LoginPage: React.FC = () => {
                                onChange={handleChange}
                         />
 
-                        <button className="login-form-button blue" type="submit">Login</button>
+                        <button className="login-form-button red" type="submit">Register</button>
 
                         {isError && (
                             <div className="login-form-error">
@@ -75,7 +73,7 @@ const LoginPage: React.FC = () => {
                         )}
 
                         <div className="login-form-switch">
-                            Don't have an account? <NavLink to="/register" className="nav-link">Sign up</NavLink>
+                            Already have an account? <NavLink to="/" className="nav-link">Sign in</NavLink>
                         </div>
                     </form>
                 )}
@@ -83,4 +81,4 @@ const LoginPage: React.FC = () => {
         </div>
     );
 }
-export default LoginPage;
+export default RegisterPage;

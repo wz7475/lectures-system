@@ -4,12 +4,22 @@ import "./App.css";
 import SidebarContainer from "./containers/SidebarContainer/SidebarContainer";
 import ContentContainer from "./containers/ContentContainer/ContentContainer";
 import {useLoginMutation} from "./store/services/api";
+import {Route, Routes} from "react-router";
+import RegisterPage from "./containers/RegisterPage/RegisterPage";
+import {selectSessionKey} from "./store/features/authSlice";
+import {useSelector} from "react-redux";
 
 const App: React.FC = () => {
-    const [, {data, isLoading, isSuccess}] = useLoginMutation();
+    const [, {isLoading}] = useLoginMutation();
+    const sessionKey = useSelector(selectSessionKey);
 
-    if (!isSuccess) {
-        return <LoginPage/>;
+    if (sessionKey === "") {
+        return (
+            <Routes>
+                <Route path="/" element={<LoginPage/>}/>
+                <Route path="/register" element={<RegisterPage/>}/>
+            </Routes>
+        );
     }
 
     if (isLoading) {

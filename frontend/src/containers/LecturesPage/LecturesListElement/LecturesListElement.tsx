@@ -1,37 +1,58 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 import "./LecturesListElement.css";
-import {AppDispatch, AppState} from "../../../store/store";
-import {useDispatch, useSelector} from "react-redux";
-import {signUpLecture} from "../../../store/reducers/lecturesReducer";
+import {useSelector} from "react-redux";
+import {selectIsAdmin, selectSessionKey} from "../../../store/features/authSlice";
+import {useGetLectureQuery, useGetSignupLecturesQuery} from "../../../store/services/api";
+import Loading from "../../../components/Loading/Loading";
 
 interface LecturesListElementProps {
-    id: string;
-    name: string;
+    id: number;
 }
 
 const LecturesListElement: React.FC<LecturesListElementProps> = (props) => {
-    const dispatch: AppDispatch = useDispatch();
+    const isAdmin = useSelector(selectIsAdmin);
 
-    const isAdmin = useSelector<AppState, boolean>((state) => state.auth.isAdmin);
+    const sessionKey = useSelector(selectSessionKey);
+    const {data: signupLectures, isFetching: isFetchingSignup} = useGetSignupLecturesQuery(sessionKey);
+    const {data: lecture, isFetching} = useGetLectureQuery(props.id);
 
     const handleSignupClick = () => {
-        dispatch(signUpLecture({id: props.id}));
+        //dispatch(signUpLecture({id: props.id}));
+    }
+
+    if (isFetching) {
+        return <div className="lectures-list-element">
+            <Loading/>
+        </div>;
     }
 
     return (
         <div className="lectures-list-element">
             <NavLink to={"/lectures/" + props.id}>
-                <div className="lectures-list-element-name">{props.name}</div>
+                <div className="lectures-list-element-name">
+                    {lecture ? lecture.name : "Cannot fetch lecture data"} {lecture ? lecture.id : ""}
+                </div>
             </NavLink>
             <div className="lectures-list-element-controls">
-                <button onClick={handleSignupClick} disabled>Sign up</button>
-                {isAdmin && <>
-                    <NavLink to={"/lectures/modify/" + props.id}>
-                        <button className="blue">Modify</button>
-                    </NavLink>
-                    <button className="red" disabled>Delete</button>
-                </>}
+                {isAdmin ? (
+                    <>
+                        <NavLink to={"/lectures/modify/" + props.id}>
+                            <button className="blue">Modify</button>
+                        </NavLink>
+                        <button className="red">Delete</button>
+                    </>
+                ) : (
+                    (isFetching || isFetchingSignup) ? (
+                        <Loading/>
+                    ) : (
+                        signupLectures !== undefined && lecture !== undefined && signupLectures.some(lec => lec.id === lecture!.id) ? (
+                            <button className="red" onClick={handleSignupClick}>Opt out</button>
+                        ) : (
+                            <button onClick={handleSignupClick}>Sign up</button>
+                        )
+                    )
+                )}
             </div>
         </div>
     );

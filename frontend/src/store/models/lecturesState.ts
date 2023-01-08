@@ -1,6 +1,6 @@
 import EState from "./common/state";
 import APIError from "./common/apiError";
-import Lecture from "./lectures/Lecture";
+import Lecture from "./Lecture";
 
 export default interface LecturesState {
     state: EState;

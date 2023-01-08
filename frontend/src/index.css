@@ -9,10 +9,14 @@ body {
     background: #222;
 }
 
-a {
+a, .nav-link {
     text-decoration: none;
     color: inherit;
     font: inherit;
+}
+
+.nav-link {
+    color: #ee4540;
 }
 
 code {
@@ -65,4 +69,24 @@ button.red {
 
 button.red:hover {
     background: #fe5550;
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #646464 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
 }
