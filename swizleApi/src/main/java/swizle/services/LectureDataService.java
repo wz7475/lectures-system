@@ -72,17 +72,34 @@ public class LectureDataService implements ILectureDataService {
 
     @Override
     public Lecture addItem(Lecture item) {
-        return null;
+        validateNewLecture(item);
+        return lectureRepository.save(item);
     }
 
     @Override
     public void editItem(long id, Lecture newData) {
+        validateNewLecture(newData);
 
+        if(!lectureRepository.existsById(id))
+            throw new InvalidParameterException("Requested lecture does not exist.");
+
+        Lecture requestedLecture = lectureRepository.getReferenceById(id);
+
+        requestedLecture.setName(newData.getName());
+        requestedLecture.setDayOfWeek(newData.getDayOfWeek());
+        requestedLecture.setBeginTime(newData.getBeginTime());
+        requestedLecture.setDayOfWeek(newData.getDayOfWeek());
+        requestedLecture.setUsers(newData.getUsers());
+
+        lectureRepository.save(requestedLecture);
     }
 
     @Override
     public void deleteItem(long id) {
+        if(!lectureRepository.existsById(id))
+            throw new InvalidParameterException("Requested lecture does not exist.");
 
+        lectureRepository.deleteById(id);
     }
 
     private void validateUserAndLectureId(long userId, long lectureId) {
@@ -90,5 +107,12 @@ public class LectureDataService implements ILectureDataService {
             throw new InvalidParameterException("Requested lecture does not exist.");
         if(!userRepository.existsById(userId))
             throw new InvalidParameterException(("Requested user does not exist."));
+    }
+
+    private void validateNewLecture(Lecture lecture) {
+        lectureRepository.findAll().forEach(l -> {
+            if(l.equals(lecture))
+                throw new IllegalArgumentException("Lecture containing given data already exists.");
+        });
     }
 }
