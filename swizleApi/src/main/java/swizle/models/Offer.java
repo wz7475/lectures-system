@@ -32,12 +32,12 @@ public class Offer implements IModel {
 //        this.offeredLectureId = offeredLectureId;
 //    }
 
-    public Offer(long id, long sellerId, long offeredLectureId, long returnedLectureId) {
-        this.id = id;
-        this.sellerId = sellerId;
-        this.offeredLectureId = offeredLectureId;
-        this.returnedLectureId = returnedLectureId;
-    }
+//    public Offer(long id, long sellerId, long offeredLectureId, long returnedLectureId) {
+//        this.id = id;
+//        this.sellerId = sellerId;
+//        this.offeredLectureId = offeredLectureId;
+//        this.returnedLectureId = returnedLectureId;
+//    }
 
     public long getId() {
         return id;

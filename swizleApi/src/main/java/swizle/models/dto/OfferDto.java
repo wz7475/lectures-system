@@ -5,10 +5,10 @@ public class OfferDto {
     private long offeredLectureId;
     private long returnedLectureId;
 
-    public OfferDto(long sellerId, long offeredLectureId) {
-        this.sellerId = sellerId;
-        this.offeredLectureId = offeredLectureId;
-    }
+//    public OfferDto(long sellerId, long offeredLectureId) {
+//        this.sellerId = sellerId;
+//        this.offeredLectureId = offeredLectureId;
+//    }
 
     public OfferDto(long sellerId, long offeredLectureId, long returnedLectureId) {
         this.sellerId = sellerId;
