@@ -30,18 +30,7 @@ public class FakeOpinionDataService implements IOpinionDataService {
     }
 
     @Override
-    public Opinion getOpinionById(int id) {
-        for (Opinion opinion : opinions) {
-            if (opinion.getId() == id) {
-                return opinion;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public List<Opinion> getOpinionsByLectureId(int lectureId) {
+    public List<Opinion> getOpinionsByLectureId(long lectureId) {
         ArrayList<Opinion> opinionsForLecture = new ArrayList<>();
         for (Opinion opinion : opinions) {
             if (opinion.getLectureId() == lectureId) {
@@ -53,7 +42,7 @@ public class FakeOpinionDataService implements IOpinionDataService {
     }
 
     @Override
-    public List<Opinion> getOpinionsByUserId(int userId) {
+    public List<Opinion> getOpinionsByUserId(long userId) {
         ArrayList<Opinion> opinionsForUser = new ArrayList<>();
         for (Opinion opinion : opinions) {
             if (opinion.getUserId() == userId) {
@@ -80,7 +69,7 @@ public class FakeOpinionDataService implements IOpinionDataService {
 
     @Override
     public void editItem(long id, Opinion newData) {
-        Opinion opinionToEdit = getOpinionById((int) id);
+        Opinion opinionToEdit = getItemById(id);
 
         opinionToEdit.setLectureId(newData.getLectureId());
         opinionToEdit.setUserId(newData.getUserId());

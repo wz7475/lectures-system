@@ -1,20 +1,47 @@
 package swizle.models;
 
-import java.util.Date;
+import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "Opinions")
 public class Opinion implements IModel {
+    @Id
+    @SequenceGenerator(name = "opinion_id_sequence", sequenceName = "opinion_id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "opinion_id_sequence")
     private long id;
+
+    @Transient
     private long lectureId;
+    @Transient
     private long userId;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private String content;
 
-    public Opinion(long id, long lectureId, long userId, Date createdAt, String content) {
+    @ManyToOne
+    private Lecture lecture;
+    @ManyToOne
+    private User user;
+
+    public Opinion() { }
+
+    public Opinion(long id, long lectureId, long userId, LocalDateTime createdAt, String content) {
         this.id = id;
         this.lectureId = lectureId;
         this.userId = userId;
         this.createdAt = createdAt;
         this.content = content;
+    }
+
+    public Opinion(Lecture lecture, User user, LocalDateTime createdAt, String content) {
+        this.lecture = lecture;
+        this.user = user;
+        this.createdAt = createdAt;
+        this.content = content;
+        this.userId = user.getId();
+        this.lectureId = lecture.getId();
     }
 
     public long getId() {
@@ -41,11 +68,11 @@ public class Opinion implements IModel {
         this.userId = userId;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -55,5 +82,21 @@ public class Opinion implements IModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Lecture getLecture() {
+        return lecture;
+    }
+
+    public void setLecture(Lecture lecture) {
+        this.lecture = lecture;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
