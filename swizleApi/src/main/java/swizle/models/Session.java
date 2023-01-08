@@ -45,5 +45,6 @@ public class Session {
 
     public void setUser(User user) {
         this.user = user;
+        this.userId = user.getId();
     }
 }

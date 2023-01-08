@@ -5,10 +5,10 @@ import swizle.models.dto.UserDto;
 
 public class UserDtoConverter {
     public static User toModel(UserDto userDto) {
-        return new User(userDto.getName(), userDto.getPassword());
+        return new User(userDto.getId(), userDto.getName(), userDto.getPassword(), userDto.isAdmin());
     }
 
     public static UserDto toDto(User user) {
-        return new UserDto(user.getName(), user.getPassword());
+        return new UserDto(user.getId(), user.getName(), user.getPassword(), user.isAdmin());
     }
 }
