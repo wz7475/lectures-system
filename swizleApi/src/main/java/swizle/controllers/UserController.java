@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import swizle.models.Session;
-import swizle.models.User;
 import swizle.models.dto.LogInResponseDto;
 import swizle.models.dto.SessionDto;
 import swizle.models.dto.UserDto;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import swizle.utils.Validator;
 import swizle.utils.dtoConverters.SessionDtoConverter;
 import swizle.utils.dtoConverters.UserDtoConverter;
 
@@ -24,10 +24,13 @@ import swizle.utils.dtoConverters.UserDtoConverter;
 @ResponseBody
 public class UserController {
     private final IUserDataService userDataService;
+    private final Validator validator;
 
     @Autowired
-    public UserController(@Qualifier(Constants.UserServiceQualifier) IUserDataService userDataService) {
+    public UserController(@Qualifier(Constants.UserServiceQualifier) IUserDataService userDataService,
+                          Validator validator) {
         this.userDataService = userDataService;
+        this.validator = validator;
     }
 
     @GetMapping("/api/user")
@@ -39,19 +42,8 @@ public class UserController {
 
     @GetMapping("/api/user/isadmin")
     public boolean isActiveUserAdmin(String sessionKey) {
-        User activeUser;
-
-        try {
-            activeUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
-        }
-        catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid or empty session key.");
-        }
-
-        if(activeUser == null)
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Log in required to perform this action.");
-
-        return activeUser.isAdmin();
+        validator.validateSessionKey(sessionKey);
+        return userDataService.getUserBySessionKey(UUID.fromString(sessionKey)).isAdmin();
     }
 
     @GetMapping("/api/user/sessions")
@@ -87,11 +79,7 @@ public class UserController {
 
     @DeleteMapping(value = "/api/user/logout", headers = { "content-type=application/json" })
     public void logOut(@RequestBody LogInResponseDto sessionKey) throws ResponseStatusException {
-        try {
-            userDataService.endSession(sessionKey.getSessionKey());
-        }
-        catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        validator.validateSessionKey(sessionKey.getSessionKey().toString());
+        userDataService.endSession(sessionKey.getSessionKey());
     }
 }
