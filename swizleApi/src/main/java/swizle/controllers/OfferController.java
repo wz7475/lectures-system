@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import swizle.models.Offer;
 import swizle.models.dto.OfferDto;
+import swizle.services.interfaces.ILectureDataService;
 import swizle.services.interfaces.IOfferDataService;
 import swizle.utils.Constants;
 import swizle.utils.Validator;
@@ -19,12 +20,16 @@ public class OfferController {
     private final IOfferDataService offerDataService;
     private final Validator validator;
 
+    private final ILectureDataService lectureDataService;
+
     @Autowired
     public OfferController(
             @Qualifier(Constants.OfferServiceQualifier) IOfferDataService offerDataService,
-            @Qualifier(Constants.Validator) Validator validator) {
+            @Qualifier(Constants.Validator) Validator validator,
+            @Qualifier(Constants.LectureServiceQualifier)ILectureDataService lectureDataService){
         this.offerDataService = offerDataService;
         this.validator = validator;
+        this.lectureDataService = lectureDataService;
     }
 
     @GetMapping("/api/offer")
@@ -59,20 +64,20 @@ public class OfferController {
         offerDataService.deleteItem(id);
     }
 
+    @PutMapping(value = "/api/offers/accept/{offerId}", headers = { "content-type=application/json" })
+    public void acceptOffer(String sessionKey, @PathVariable long offerId, @RequestBody long buyerId) {
+        this.validator.validateSessionKey(sessionKey);
 
+        Offer offer = offerDataService.getItemById(offerId);
+        long sellerId = offer.getSellerId();
+        long offeredLectureId = offer.getOfferedLectureId();
+        long returnedLectureId = offer.getReturnedLectureId();
 
-//    private void validateLecture(Lecture lecture) {
-//        if(lecture == null)
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Requested lecture does not exist.");
-//    }
-//
-//    private void validateOpinion(Opinion opinion) {
-//        if(opinion == null)
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Requested opinion does not exist.");
-//    }
+        lectureDataService.optOutOfLecture(offeredLectureId, sellerId);
+        lectureDataService.signUpForLecture(offeredLectureId, buyerId);
 
-//    @PutMapping(value = "/api/offers/accept", headers = { "content-type=application/json" })
-//    public void acceptOffer(@RequestBody long buyerId) {
-//        return buyerId;
-//    }
+        lectureDataService.optOutOfLecture(returnedLectureId, buyerId);
+        lectureDataService.signUpForLecture(returnedLectureId, sellerId);
+
+    }
 }
