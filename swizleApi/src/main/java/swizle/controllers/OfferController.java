@@ -79,5 +79,6 @@ public class OfferController {
         lectureDataService.optOutOfLecture(returnedLectureId, buyerId);
         lectureDataService.signUpForLecture(returnedLectureId, sellerId);
 
+        offerDataService.deleteItem(offerId);
     }
 }
