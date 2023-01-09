@@ -13,6 +13,7 @@ import swizle.services.interfaces.ILectureDataService;
 import swizle.services.interfaces.IOpinionDataService;
 import swizle.services.interfaces.IUserDataService;
 import swizle.utils.Constants;
+import swizle.utils.Validator;
 import swizle.utils.dtoConverters.OpinionDtoConverter;
 
 import java.time.LocalDateTime;
@@ -25,15 +26,18 @@ public class OpinionController {
     private final IOpinionDataService opinionDataService;
     private final IUserDataService userDataService;
     private final ILectureDataService lectureDataService;
+    private Validator validator;
 
     @Autowired
     public OpinionController(
             @Qualifier(Constants.OpinionServiceQualifier) IOpinionDataService opinionDataService,
             @Qualifier(Constants.UserServiceQualifier) IUserDataService userDataService,
-            @Qualifier(Constants.LectureServiceQualifier) ILectureDataService lectureDataService) {
+            @Qualifier(Constants.LectureServiceQualifier) ILectureDataService lectureDataService,
+            Validator validator) {
         this.opinionDataService = opinionDataService;
         this.userDataService = userDataService;
         this.lectureDataService = lectureDataService;
+        this.validator = validator;
     }
 
     @GetMapping("api/opinions")
@@ -59,6 +63,7 @@ public class OpinionController {
 
     @GetMapping("api/opinions/user")
     public List<OpinionDto> getOpinionsByUserId(String sessionKey) {
+        validator.validateSessionKey(sessionKey);
         User currentUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
         final ArrayList<OpinionDto> response = new ArrayList<>();
         opinionDataService.getOpinionsByUserId(currentUser.getId()).forEach(opinion -> response.add(OpinionDtoConverter.toDto(opinion)));
@@ -67,29 +72,24 @@ public class OpinionController {
 
     @PostMapping(value = "api/opinions", headers = {"content-type=application/json"})
     public void postOpinion(@RequestBody OpinionDto opinion, String sessionKey) {
-        User currentUser;
-        Lecture requestedLecture;
-        try {
-            currentUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
-            validateUser(currentUser);
-        }
-        catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        validator.validateSessionKey(sessionKey);
 
-        requestedLecture = lectureDataService.getItemById(opinion.getLectureId());
+        User currentUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
+        Lecture requestedLecture = lectureDataService.getItemById(opinion.getLectureId());
         validateLecture(requestedLecture);
+
         opinionDataService.addItem(new Opinion(requestedLecture, currentUser,
                 LocalDateTime.now(), opinion.getContent()));
     }
 
     @PutMapping(value = "/api/opinions", headers = {"content-type=application/json"})
     public void putOpinion(int opinionId, @RequestBody OpinionDto opinion, String sessionKey) {
+        validator.validateSessionKey(sessionKey);
+
         User requestedUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
         Lecture newLecture = lectureDataService.getItemById(opinion.getLectureId());
         Opinion opinionToEdit = opinionDataService.getItemById(opinionId);
 
-        validateUser(requestedUser);
         validateLecture(newLecture);
         validateOpinion(opinionToEdit);
 
@@ -98,18 +98,10 @@ public class OpinionController {
 
     @DeleteMapping("api/opinions")
     public void deleteOpinion(int opinionId, String sessionKey) {
-        User requestedUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
+        validator.validateSessionKey(sessionKey);
         Opinion opinionToDelete = opinionDataService.getItemById(opinionId);
-
-        validateUser(requestedUser);
         validateOpinion(opinionToDelete);
-
         opinionDataService.deleteItem(opinionId);
-    }
-
-    private void validateUser(User user) {
-        if(user == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Session with the given key does not exist.");
     }
 
     private void validateLecture(Lecture lecture) {
