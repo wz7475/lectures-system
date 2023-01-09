@@ -3,7 +3,12 @@ import {NavLink} from "react-router-dom";
 import "./LecturesListElement.css";
 import {useSelector} from "react-redux";
 import {selectIsAdmin, selectSessionKey} from "../../../store/features/authSlice";
-import {useGetLectureQuery, useGetSignupLecturesQuery} from "../../../store/services/api";
+import {
+    useGetLectureQuery,
+    useGetSignupLecturesQuery,
+    useOptoutLectureMutation,
+    useSignupLectureMutation
+} from "../../../store/services/api";
 import Loading from "../../../components/Loading/Loading";
 
 interface LecturesListElementProps {
@@ -12,16 +17,27 @@ interface LecturesListElementProps {
 
 const LecturesListElement: React.FC<LecturesListElementProps> = (props) => {
     const isAdmin = useSelector(selectIsAdmin);
-
     const sessionKey = useSelector(selectSessionKey);
-    const {data: signupLectures, isFetching: isFetchingSignup} = useGetSignupLecturesQuery(sessionKey);
-    const {data: lecture, isFetching} = useGetLectureQuery(props.id);
+
+    const {data: signupLectures, isFetching: isFetchingSignupLectures} = useGetSignupLecturesQuery(sessionKey);
+    const {data: lecture, isFetching: isFetchingLecture} = useGetLectureQuery(props.id);
+    const [signup, {isLoading: isLoadingSignup}] = useSignupLectureMutation();
+    const [optout, {isLoading: isLoadingOptout}] = useOptoutLectureMutation();
 
     const handleSignupClick = () => {
-        //dispatch(signUpLecture({id: props.id}));
+        signup({
+            session: sessionKey,
+            data: props.id
+        })
+    }
+    const handleOptoutClick = () => {
+        optout({
+            session: sessionKey,
+            data: props.id
+        })
     }
 
-    if (isFetching) {
+    if (isFetchingLecture) {
         return <div className="lectures-list-element">
             <Loading/>
         </div>;
@@ -43,11 +59,11 @@ const LecturesListElement: React.FC<LecturesListElementProps> = (props) => {
                         <button className="red">Delete</button>
                     </>
                 ) : (
-                    (isFetching || isFetchingSignup) ? (
+                    (isFetchingLecture || isFetchingSignupLectures || isLoadingSignup || isLoadingOptout) ? (
                         <Loading/>
                     ) : (
                         signupLectures !== undefined && lecture !== undefined && signupLectures.some(lec => lec.id === lecture!.id) ? (
-                            <button className="red" onClick={handleSignupClick}>Opt out</button>
+                            <button className="red" onClick={handleOptoutClick}>Opt out</button>
                         ) : (
                             <button onClick={handleSignupClick}>Sign up</button>
                         )

@@ -10,10 +10,10 @@
 }
 
 .sidebar-container-logo {
-    margin: 48px 24px 24px;
+    margin: 48px 24px 0;
 }
 
 .sidebar-container-navigation {
     margin: 0 auto;
-    padding: 16px;
+    padding: 0 16px;
 }

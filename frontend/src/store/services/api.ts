@@ -22,12 +22,14 @@ type ProtectedRequest<T> = {
     data: T
 }
 
+const tagTypes = ["Lectures", "SignupLectures"];
+
 export const api = createApi({
     reducerPath: "authApi",
     baseQuery: fetchBaseQuery({
         baseUrl: "/api"
     }),
-    tagTypes: ["Lectures", "SignupLectures"],
+    tagTypes: tagTypes,
     endpoints: (builder) => ({
         login: builder.mutation<UserResponse, LoginRequest>({
             query: (credentials) => ({
@@ -51,7 +53,8 @@ export const api = createApi({
                     "Content-Type": "application/json"
                 },
                 body: session
-            })
+            }),
+            invalidatesTags: ["SignupLectures"]
         }),
         getLectures: builder.query<LecturesResponse, void>({
             query: () => "/lectures",
@@ -64,8 +67,7 @@ export const api = createApi({
         }),
         getSignupLectures: builder.query<LecturesResponse, string>({
             query: (session) => `/lectures/user?sessionKey=${session}`,
-            providesTags: (result) =>
-                result ? result.map(({id}) => ({type: 'SignupLectures', id})) : ['SignupLectures'],
+            providesTags: ["SignupLectures"],
         }),
         addLecture: builder.mutation<ProtectedRequest<Lecture>, Partial<ProtectedRequest<Lecture>>>({
             query: (data) => ({
@@ -77,7 +79,7 @@ export const api = createApi({
         }),
         modifyLecture: builder.mutation<ProtectedRequest<Lecture>, Partial<ProtectedRequest<Lecture>>>({
             query: (data) => ({
-                url: `/lectures?lecture=${data.data?.id}&sessionKey=${data.session}`,
+                url: `/lectures?lectureId=${data.data?.id}&sessionKey=${data.session}`,
                 method: "PUT",
                 body: data.data
             }),
@@ -85,14 +87,14 @@ export const api = createApi({
         }),
         signupLecture: builder.mutation<ProtectedRequest<number>, Partial<ProtectedRequest<number>>>({
             query: (data) => ({
-                url: `/lectures/signup?lecture=${data.data}&sessionKey=${data.session}`,
+                url: `/lectures/signup?lectureId=${data.data}&sessionKey=${data.session}`,
                 method: "POST"
             }),
             invalidatesTags: ["SignupLectures"]
         }),
         optoutLecture: builder.mutation<ProtectedRequest<number>, Partial<ProtectedRequest<number>>>({
             query: (data) => ({
-                url: `/lectures/output?lecture=${data.data}&sessionKey=${data.session}`,
+                url: `/lectures/optout?lectureId=${data.data}&sessionKey=${data.session}`,
                 method: "DELETE"
             }),
             invalidatesTags: ["SignupLectures"]

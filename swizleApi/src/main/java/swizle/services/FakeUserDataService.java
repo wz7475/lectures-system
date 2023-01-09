@@ -18,6 +18,7 @@ public class FakeUserDataService implements IUserDataService {
 
     public FakeUserDataService() {
         users.add(new User(1, "admin", "12345", true));
+        users.add(new User(2, "user", "user", false));
     }
 
     @Override

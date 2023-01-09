@@ -22,10 +22,17 @@ public class FakeLectureDataService implements ILectureDataService {
     public FakeLectureDataService() {
         lectures.add(new Lecture(
                 1,
-                "J. angielski",
+                "English",
                 DayOfWeek.MONDAY,
                 LocalTime.of(12, 15),
                 Duration.ofHours(1))
+        );
+        lectures.add(new Lecture(
+                2,
+                "German",
+                DayOfWeek.FRIDAY,
+                LocalTime.of(15, 30),
+                Duration.ofHours(2))
         );
     }
 
