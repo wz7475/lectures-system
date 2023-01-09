@@ -11,6 +11,7 @@ import swizle.models.dto.LectureDto;
 import swizle.services.interfaces.ILectureDataService;
 import swizle.services.interfaces.IUserDataService;
 import swizle.utils.Constants;
+import swizle.utils.Validator;
 import swizle.utils.dtoConverters.LectureDtoConverter;
 
 import java.security.InvalidParameterException;
@@ -22,13 +23,16 @@ import java.util.UUID;
 public class LectureController {
     private final ILectureDataService lectureDataService;
     private final IUserDataService userDataService;
+    private final Validator validator;
 
     @Autowired
     public LectureController(
             @Qualifier(Constants.LectureServiceQualifier) ILectureDataService lectureDataService,
-            @Qualifier(Constants.UserServiceQualifier) IUserDataService userDataService) {
+            @Qualifier(Constants.UserServiceQualifier) IUserDataService userDataService,
+            Validator validator) {
         this.lectureDataService = lectureDataService;
         this.userDataService = userDataService;
+        this.validator = validator;
     }
 
     @GetMapping("api/lectures")
@@ -50,23 +54,17 @@ public class LectureController {
 
     @GetMapping("api/lectures/user")
     public List<LectureDto> getLecturesForUser(String sessionKey) {
-        try {
-            User requestedUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
-            if (requestedUser == null)
-                throwInvalidSessionKey();
-            final ArrayList<LectureDto> response = new ArrayList<>();
-            lectureDataService.getLecturesForUser(
-                    userDataService.getUserBySessionKey(UUID.fromString(sessionKey)).getId()
-            ).forEach(lecture -> response.add(LectureDtoConverter.toDto(lecture)));
-            return response;
-        }
-        catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        validator.validateSessionKey(sessionKey);
+        final ArrayList<LectureDto> response = new ArrayList<>();
+        lectureDataService.getLecturesForUser(
+                userDataService.getUserBySessionKey(UUID.fromString(sessionKey)).getId()
+        ).forEach(lecture -> response.add(LectureDtoConverter.toDto(lecture)));
+        return response;
     }
 
     @PostMapping(value = "api/lectures", headers = { "content-type=application/json" })
     public LectureDto postLecture(@RequestBody LectureDto lecture, String sessionKey) {
+        validator.validateSessionKey(sessionKey);
         if(isAdmin(sessionKey)) {
             try {
                 return LectureDtoConverter.toDto(
@@ -83,17 +81,8 @@ public class LectureController {
 
     @PutMapping(value = "/api/lectures", headers = { "content-type=application/json" })
     public void putLecture(long lectureId, @RequestBody LectureDto lecture, String sessionKey) throws ResponseStatusException {
-        User requestedUser;
-
-        try {
-            requestedUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
-        }
-        catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-
-        if(requestedUser == null)
-            throwInvalidSessionKey();
+        validator.validateSessionKey(sessionKey);
+        User requestedUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
 
         if(requestedUser.isAdmin()) {
             try {
@@ -113,6 +102,7 @@ public class LectureController {
 
     @DeleteMapping("api/lectures")
     public void deleteLecture(long lectureId, String sessionKey) {
+        validator.validateSessionKey(sessionKey);
         if (isAdmin(sessionKey)) {
             try {
                 lectureDataService.deleteItem(lectureId);
@@ -126,10 +116,8 @@ public class LectureController {
 
     @PostMapping("api/lectures/signup")
     public void signUpForLecture(long lectureId, String sessionKey) {
+        validator.validateSessionKey(sessionKey);
         User currentUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
-
-        if(currentUser == null)
-            throwInvalidSessionKey();
 
         try {
             lectureDataService.signUpForLecture(lectureId, currentUser.getId());
@@ -144,10 +132,8 @@ public class LectureController {
 
     @DeleteMapping ("api/lectures/optout")
     public void optOutFromLecture(long lectureId, String sessionKey) {
+        validator.validateSessionKey(sessionKey);
         User currentUser = userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
-
-        if(currentUser == null)
-            throwInvalidSessionKey();
 
         try {
             lectureDataService.optOutOfLecture(lectureId, currentUser.getId());
@@ -172,16 +158,7 @@ public class LectureController {
         return result;
     }
 
-    private boolean isAdmin(String sessionKey) throws NullPointerException {
-        User user =  userDataService.getUserBySessionKey(UUID.fromString(sessionKey));
-
-        if(user == null)
-            throwInvalidSessionKey();
-
-        return user.isAdmin();
-    }
-
-    private void throwInvalidSessionKey() throws ResponseStatusException {
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Session with the given key does not exist.");
+    private boolean isAdmin(String sessionKey) {
+        return userDataService.getUserBySessionKey(UUID.fromString(sessionKey)).isAdmin();
     }
 }
