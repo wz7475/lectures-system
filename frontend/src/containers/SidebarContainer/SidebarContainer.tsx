@@ -11,10 +11,24 @@ const SidebarContainer: React.FC = () => {
                 <Logo/>
             </div>
             <div className="sidebar-container-navigation">
-                <NavigationLink title="Lectures" to="/lectures"/>
-                <NavigationLink title="Opinions" to="/opinions"/>
-                <NavigationLink title="Switch" to="/switches"/>
-                <NavigationLink title="Profile" to="/profile"/>
+                <NavigationLink to="/lectures">
+                    <>
+                        <i className="icon-list"/>
+                        Lectures
+                    </>
+                </NavigationLink>
+                <NavigationLink to="/switches">
+                    <>
+                        <i className="icon-exchange"/>
+                        Offers
+                    </>
+                </NavigationLink>
+                <NavigationLink to="/profile">
+                    <>
+                        <i className="icon-user"/>
+                        My Profile
+                    </>
+                </NavigationLink>
             </div>
             <div className="sidebar-container-logout">
                 <LogoutButton/>

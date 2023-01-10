@@ -66,9 +66,9 @@ const LecturesListElement: React.FC<LecturesListElementProps> = (props) => {
                     ) : (
                         <>
                             <NavLink to={"/lectures/modify/" + props.id}>
-                                <button className="blue">Modify</button>
+                                <button className="blue"><i className="icon-edit"/>Modify</button>
                             </NavLink>
-                            <button className="red" onClick={handleDeleteClick}>Delete</button>
+                            <button className="red" onClick={handleDeleteClick}><i className="icon-delete"/>Delete</button>
                         </>
                     )
                 ) : (
@@ -76,9 +76,9 @@ const LecturesListElement: React.FC<LecturesListElementProps> = (props) => {
                         <Loading/>
                     ) : (
                         signupLectures !== undefined && lecture !== undefined && signupLectures.some(lec => lec.id === lecture!.id) ? (
-                            <button className="red" onClick={handleOptoutClick}>Opt out</button>
+                            <button className="red" onClick={handleOptoutClick}><i className="icon-cancel"/>Opt out</button>
                         ) : (
-                            <button onClick={handleSignupClick}>Sign up</button>
+                            <button onClick={handleSignupClick}><i className="icon-accept"/>Sign up</button>
                         )
                     )
                 )}

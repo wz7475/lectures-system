@@ -64,7 +64,7 @@ const RegisterPage: React.FC = () => {
                                onChange={handleChange}
                         />
 
-                        <button className="login-form-button red" type="submit">Register</button>
+                        <button className="login-form-button red" type="submit"><i className="icon-log-in"/>Register</button>
 
                         {isError && (
                             <div className="login-form-error">

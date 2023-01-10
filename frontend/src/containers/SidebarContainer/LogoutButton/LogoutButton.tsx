@@ -9,18 +9,21 @@ import {useNavigate} from "react-router-dom";
 const LogoutButton: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate();
-    const [logout] = useLogoutMutation();
+    const [logout] = useLogoutMutation({
+        fixedCacheKey: "shared-logout"
+    });
     const sessionKey = useSelector(selectSessionKey);
 
     const handleLogout = async () => {
-        await logout({sessionKey: sessionKey}).unwrap();
-        dispatch(removeCredentials());
-        navigate("/");
+        await logout({sessionKey: sessionKey}).unwrap().finally(() => {
+            dispatch(removeCredentials());
+            navigate("/");
+        });
     }
 
     return (
         <div className="logout-button-container">
-            <button className="red" onClick={handleLogout}>Logout</button>
+            <button className="red" onClick={handleLogout}><i className="icon-log-out"/>Logout</button>
         </div>
     );
 };

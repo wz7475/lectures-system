@@ -4,7 +4,7 @@ import "./Loading.css";
 const Loading: React.FC = () => {
     return (
         <div className="loading">
-            <i className="icon-loading"/>
+            <i className="icon-loader"/>
         </div>
     );
 }

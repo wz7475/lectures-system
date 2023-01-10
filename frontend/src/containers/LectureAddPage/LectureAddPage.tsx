@@ -2,9 +2,7 @@ import React, {useState} from "react";
 import "./LectureAddPage.css";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppState} from "../../store/store";
-import EState from "../../store/models/common/state";
 import Loading from "../../components/Loading/Loading";
-import {addLecture} from "../../store/reducers/lecturesReducer";
 import Lecture from "../../store/models/Lecture";
 import {Navigate} from "react-router";
 

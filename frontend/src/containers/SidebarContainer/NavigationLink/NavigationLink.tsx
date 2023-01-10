@@ -1,26 +1,16 @@
 import React from "react";
 import "./NavigationLink.css";
 import {NavLink} from "react-router-dom";
+import {IComponentWithChildrenProps} from "../../../common/componentWithChildrenProps";
 
-interface NavigationLinkProps {
-    title: string;
+interface INavigationLinkProps extends IComponentWithChildrenProps {
     to: string;
-    disabled?: boolean;
 }
 
-const NavigationLink: React.FC<NavigationLinkProps> = ({title, to, disabled = false}) => {
-    if (disabled) {
-        return (
-            <div className="navigation-link disabled">
-                {title}
-                <div className="temporary-disabled">Temporary disabled</div>
-            </div>
-        );
-    }
-
+const NavigationLink: React.FC<INavigationLinkProps> = ({to, children}) => {
     return (
         <NavLink to={to} className={({isActive}) => isActive ? "navigation-link active" : "navigation-link"}>
-            {title}
+            {children}
         </NavLink>
     );
 };

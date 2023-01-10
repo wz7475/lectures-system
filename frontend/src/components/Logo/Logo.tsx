@@ -5,9 +5,9 @@ import "./Logo.css";
 const Logo: React.FC = () => {
     return (
         <div className="logo-container">
-            <img src={logo} alt="SWiZZLE Logo"/>
+            <img src={logo} alt="SWiZLE Logo"/>
             <div className="logo-title">
-                SWiZZLE
+                SWiZLE
             </div>
         </div>
     );

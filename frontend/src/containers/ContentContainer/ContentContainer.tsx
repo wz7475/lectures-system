@@ -11,7 +11,7 @@ const ContentContainer: React.FC = () => {
             <Routes>
                 <Route path="/" element={<Navigate to="/lectures"/>}/>
                 <Route path="/lectures" element={<LecturesPage/>}>
-                    <Route index element={<div></div>}/>
+                    <Route index element={<div>3</div>}/>
                 </Route>
                 <Route path="/lectures/:lectureId" element={<LecturePage/>} />
                 <Route path="/lectures/new/*" element={<LectureAddPage/>} />
