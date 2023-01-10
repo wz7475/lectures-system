@@ -4,6 +4,7 @@ import "./LecturesListElement.css";
 import {useSelector} from "react-redux";
 import {selectIsAdmin, selectSessionKey} from "../../../store/features/authSlice";
 import {
+    useDeleteLectureMutation,
     useGetLectureQuery,
     useGetSignupLecturesQuery,
     useOptoutLectureMutation,
@@ -23,6 +24,7 @@ const LecturesListElement: React.FC<LecturesListElementProps> = (props) => {
     const {data: lecture, isFetching: isFetchingLecture} = useGetLectureQuery(props.id);
     const [signup, {isLoading: isLoadingSignup}] = useSignupLectureMutation();
     const [optout, {isLoading: isLoadingOptout}] = useOptoutLectureMutation();
+    const [deleteLecture, {isLoading: isLoadingDelete}] = useDeleteLectureMutation();
 
     const handleSignupClick = () => {
         signup({
@@ -32,6 +34,13 @@ const LecturesListElement: React.FC<LecturesListElementProps> = (props) => {
     }
     const handleOptoutClick = () => {
         optout({
+            session: sessionKey,
+            data: props.id
+        })
+    }
+
+    const handleDeleteClick = () => {
+        deleteLecture({
             session: sessionKey,
             data: props.id
         })
@@ -52,12 +61,16 @@ const LecturesListElement: React.FC<LecturesListElementProps> = (props) => {
             </NavLink>
             <div className="lectures-list-element-controls">
                 {isAdmin ? (
-                    <>
-                        <NavLink to={"/lectures/modify/" + props.id}>
-                            <button className="blue">Modify</button>
-                        </NavLink>
-                        <button className="red">Delete</button>
-                    </>
+                    (isLoadingDelete) ? (
+                        <Loading/>
+                    ) : (
+                        <>
+                            <NavLink to={"/lectures/modify/" + props.id}>
+                                <button className="blue">Modify</button>
+                            </NavLink>
+                            <button className="red" onClick={handleDeleteClick}>Delete</button>
+                        </>
+                    )
                 ) : (
                     (isFetchingLecture || isFetchingSignupLectures || isLoadingSignup || isLoadingOptout) ? (
                         <Loading/>

@@ -58,12 +58,11 @@ export const api = createApi({
         }),
         getLectures: builder.query<LecturesResponse, void>({
             query: () => "/lectures",
-            providesTags: (result) =>
-                result ? result.map(({id}) => ({type: 'Lectures', id})) : ['Lectures'],
+            providesTags: ["Lectures"]
         }),
         getLecture: builder.query<Lecture, number>({
             query: (id) => `/lectures/lecture?id=${id}`,
-            providesTags: (result, error, id) => [{type: 'Lectures', id}],
+            providesTags: ["Lectures"]
         }),
         getSignupLectures: builder.query<LecturesResponse, string>({
             query: (session) => `/lectures/user?sessionKey=${session}`,
@@ -82,6 +81,13 @@ export const api = createApi({
                 url: `/lectures?lectureId=${data.data?.id}&sessionKey=${data.session}`,
                 method: "PUT",
                 body: data.data
+            }),
+            invalidatesTags: ["Lectures"]
+        }),
+        deleteLecture: builder.mutation<void, ProtectedRequest<number>>({
+            query: (data) => ({
+                url: `/lectures?lectureId=${data.data}&sessionKey=${data.session}`,
+                method: "DELETE"
             }),
             invalidatesTags: ["Lectures"]
         }),
@@ -111,6 +117,7 @@ export const {
     useGetSignupLecturesQuery,
     useAddLectureMutation,
     useModifyLectureMutation,
+    useDeleteLectureMutation,
     useSignupLectureMutation,
     useOptoutLectureMutation
 } = api;
