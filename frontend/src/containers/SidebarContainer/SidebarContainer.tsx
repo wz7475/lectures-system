@@ -3,8 +3,13 @@ import "./SidebarContainer.css";
 import Logo from "../../components/Logo/Logo";
 import NavigationLink from "./NavigationLink/NavigationLink";
 import LogoutButton from "./LogoutButton/LogoutButton";
+import {selectIsAdmin} from "../../store/features/authSlice";
+import {useSelector} from "react-redux";
+import {AppState} from "../../store/store";
 
 const SidebarContainer: React.FC = () => {
+    const isAdmin = useSelector<AppState, boolean>(selectIsAdmin);
+
     return (
         <div className="sidebar-container">
             <div className="sidebar-container-logo">
@@ -23,12 +28,14 @@ const SidebarContainer: React.FC = () => {
                         Offers
                     </>
                 </NavigationLink>
-                <NavigationLink to="/profile">
-                    <>
-                        <i className="icon-user"/>
-                        My Profile
-                    </>
-                </NavigationLink>
+                {!isAdmin && (
+                    <NavigationLink to="/profile">
+                        <>
+                            <i className="icon-user"/>
+                            My Profile
+                        </>
+                    </NavigationLink>
+                )}
             </div>
             <div className="sidebar-container-logout">
                 <LogoutButton/>

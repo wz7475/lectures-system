@@ -1,9 +1,9 @@
 import React from "react";
 import "./NavigationLink.css";
 import {NavLink} from "react-router-dom";
-import {IComponentWithChildrenProps} from "../../../common/componentWithChildrenProps";
+import {IParentComponentProps} from "../../../common/parentComponentProps";
 
-interface INavigationLinkProps extends IComponentWithChildrenProps {
+interface INavigationLinkProps extends IParentComponentProps {
     to: string;
 }
 
