@@ -21,7 +21,7 @@ const LecturesListControls: React.FC = () => {
                     <button className="blue">New</button>
                 </NavLink>
             ) : (
-                <button onClick={handleClick}>Refresh</button>
+                <button onClick={handleClick}><i className="icon-loader"/>Refresh</button>
             )}
         </div>
     );
