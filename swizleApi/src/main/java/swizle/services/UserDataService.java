@@ -1,6 +1,5 @@
 package swizle.services;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import swizle.models.Session;
@@ -9,6 +8,7 @@ import swizle.repositories.ISessionRepository;
 import swizle.repositories.IUserRepository;
 import swizle.services.interfaces.IUserDataService;
 import swizle.utils.Constants;
+import swizle.utils.PasswordCrypto;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,11 +17,14 @@ import java.util.UUID;
 public class UserDataService implements IUserDataService {
     private final IUserRepository userRepository;
     private final ISessionRepository sessionRepository;
+    private final PasswordCrypto passwordCrypto;
 
     @Autowired
-    public UserDataService(IUserRepository userRepository, ISessionRepository sessionRepository) {
+    public UserDataService(IUserRepository userRepository, ISessionRepository sessionRepository,
+                           PasswordCrypto passwordCrypto) {
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
+        this.passwordCrypto = passwordCrypto;
     }
 
     @Override
@@ -37,6 +40,7 @@ public class UserDataService implements IUserDataService {
     @Override
     public User addItem(User item) {
         try {
+            item.setPassword(passwordCrypto.encryptPassword(item.getPassword()));
             return userRepository.save(item);
         }
         catch (Exception e) {
@@ -49,7 +53,7 @@ public class UserDataService implements IUserDataService {
         User userToModify = userRepository.getReferenceById(id);
 
         userToModify.setName(newData.getName());
-        userToModify.setPassword(newData.getPassword());
+        userToModify.setPassword(passwordCrypto.encryptPassword(newData.getPassword()));
         userToModify.setAdmin(newData.isAdmin());
 
         try {
@@ -72,10 +76,12 @@ public class UserDataService implements IUserDataService {
 
     @Override
     public User getUserByNameAndPassword(String name, String password) {
-        if(!userRepository.existsByNameAndPassword(name, password))
-            return null;
+        for(User user : userRepository.findAll()) {
+            if(user.getName().equals(name) && passwordCrypto.passwordMatches(password, user.getPassword()))
+                return user;
+        }
 
-        return userRepository.findByNameAndPassword(name, password);
+        return null;
     }
 
     @Override

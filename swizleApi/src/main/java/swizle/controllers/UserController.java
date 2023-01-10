@@ -11,14 +11,13 @@ import swizle.models.dto.SessionDto;
 import swizle.models.dto.UserDto;
 import swizle.services.interfaces.IUserDataService;
 import swizle.utils.Constants;
+import swizle.utils.Validator;
+import swizle.utils.dtoConverters.SessionDtoConverter;
+import swizle.utils.dtoConverters.UserDtoConverter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import swizle.utils.Validator;
-import swizle.utils.dtoConverters.SessionDtoConverter;
-import swizle.utils.dtoConverters.UserDtoConverter;
 
 @RestController
 @ResponseBody

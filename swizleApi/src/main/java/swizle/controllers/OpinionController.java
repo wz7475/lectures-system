@@ -26,7 +26,7 @@ public class OpinionController {
     private final IOpinionDataService opinionDataService;
     private final IUserDataService userDataService;
     private final ILectureDataService lectureDataService;
-    private Validator validator;
+    private final Validator validator;
 
     @Autowired
     public OpinionController(
