@@ -2,7 +2,10 @@ package swizle.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+import swizle.models.Lecture;
 import swizle.models.Offer;
 import swizle.models.dto.OfferDto;
 import swizle.services.interfaces.ILectureDataService;
@@ -26,15 +29,14 @@ public class OfferController {
     public OfferController(
             @Qualifier(Constants.OfferServiceQualifier) IOfferDataService offerDataService,
             @Qualifier(Constants.Validator) Validator validator,
-            @Qualifier(Constants.LectureServiceQualifier)ILectureDataService lectureDataService){
+            @Qualifier(Constants.LectureServiceQualifier) ILectureDataService lectureDataService) {
         this.offerDataService = offerDataService;
         this.validator = validator;
         this.lectureDataService = lectureDataService;
     }
 
     @GetMapping("/api/offer")
-    public List<Offer> getOffers(String sessionKey)
-    {
+    public List<Offer> getOffers(String sessionKey) {
         this.validator.validateSessionKey(sessionKey);
         return offerDataService.getItems();
     }
@@ -49,7 +51,17 @@ public class OfferController {
     @PostMapping(value = "/api/offers", headers = {"content-type=application/json"})
     public Offer addOffer(@RequestBody OfferDto offerDto, String sessionKey) {
         this.validator.validateSessionKey(sessionKey);
-        return offerDataService.addItem(OfferDtoConverter.toModel(offerDto));
+        Offer offer = OfferDtoConverter.toModel(offerDto);
+        long offeredLectureId = offer.getOfferedLectureId();
+        long returnedLectureId = offer.getReturnedLectureId();
+        List<Lecture> userLectures = lectureDataService.getLecturesForUser(offer.getSellerId());
+        List<Lecture> allLectures = lectureDataService.getItems();
+        if (userLectures.stream().anyMatch(lecture -> lecture.getId() == offeredLectureId)
+                && allLectures.stream().anyMatch(lecture -> lecture.getId() == returnedLectureId)) {
+            return offerDataService.addItem(offer);
+        } else {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Broken offer: offered or returned lecture is not available.");
+        }
     }
 
     @PutMapping(value = "/api/offers/{id}", headers = {"content-type=application/json"})
@@ -64,7 +76,7 @@ public class OfferController {
         offerDataService.deleteItem(id);
     }
 
-    @PutMapping(value = "/api/offers/accept/{offerId}", headers = { "content-type=application/json" })
+    @PutMapping(value = "/api/offers/accept/{offerId}", headers = {"content-type=application/json"})
     public void acceptOffer(String sessionKey, @PathVariable long offerId, @RequestBody long buyerId) {
         this.validator.validateSessionKey(sessionKey);
 
