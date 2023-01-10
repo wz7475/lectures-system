@@ -1,4 +1,4 @@
-.lectures-list-element {
+.lecture-element {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -9,11 +9,25 @@
     background: rgba(255, 255, 255, 0.05);
 }
 
-.lectures-list-element-name {
+.lecture-element-part {
+    float: left;
     font-size: 20px;
+    padding: 0 24px;
 }
 
-.lectures-list-element-controls {
+.lecture-element-part:first-child {
+    padding-left: 8px;
+}
+
+.lecture-element-part:last-child {
+    padding-right: 8px;
+}
+
+.lecture-element-id {
+    border-right: 1px solid grey;
+}
+
+.lecture-element-controls {
     display: flex;
     grid-gap: 16px;
 }

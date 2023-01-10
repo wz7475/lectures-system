@@ -3,7 +3,7 @@ interface Lecture {
     name: string;
     dayOfWeek: number;
     beginTimeHour: number;
-    beginTimeMinutes: number;
+    beginTimeMinute: number;
     durationHours: number;
     durationMinutes: number;
 }

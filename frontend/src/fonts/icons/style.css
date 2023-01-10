@@ -29,14 +29,20 @@
 .icon-error:before {
   content: "\e900";
 }
+.icon-time:before {
+  content: "\e90d";
+}
 .icon-accept:before {
   content: "\e901";
 }
+.icon-list:before {
+  content: "\e90e";
+}
+.icon-duration:before {
+  content: "\e90f";
+}
 .icon-edit:before {
   content: "\e902";
-}
-.icon-list:before {
-  content: "\e903";
 }
 .icon-loader:before {
   content: "\e904";
@@ -53,6 +59,12 @@
 .icon-pen:before {
   content: "\e908";
 }
+.icon-exchange:before {
+  content: "\e90c";
+}
+.icon-reload:before {
+  content: "\e910";
+}
 .icon-delete:before {
   content: "\e909";
 }
@@ -61,7 +73,4 @@
 }
 .icon-cancel:before {
   content: "\e90b";
-}
-.icon-exchange:before {
-  content: "\e90c";
 }
