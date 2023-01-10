@@ -90,7 +90,7 @@ public class OfferController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Buyer already has the offered lecture.");
         }
         if (buyerLectures.stream().noneMatch(lecture -> lecture.getId() == returnedLectureId)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Buyer does not own returned lecture.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Buyer does not own returned lecture.");
         }
 
         lectureDataService.optOutOfLecture(offeredLectureId, sellerId);
