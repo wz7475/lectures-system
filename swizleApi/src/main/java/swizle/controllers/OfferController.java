@@ -85,6 +85,14 @@ public class OfferController {
         long offeredLectureId = offer.getOfferedLectureId();
         long returnedLectureId = offer.getReturnedLectureId();
 
+        List<Lecture> buyerLectures = lectureDataService.getLecturesForUser(buyerId);
+        if (buyerLectures.stream().anyMatch(lecture -> lecture.getId() == offeredLectureId)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Buyer already has the offered lecture.");
+        }
+        if (buyerLectures.stream().noneMatch(lecture -> lecture.getId() == returnedLectureId)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Buyer does not own returned lecture.");
+        }
+
         lectureDataService.optOutOfLecture(offeredLectureId, sellerId);
         lectureDataService.signUpForLecture(offeredLectureId, buyerId);
 
