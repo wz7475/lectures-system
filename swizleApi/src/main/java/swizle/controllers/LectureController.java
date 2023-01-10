@@ -158,7 +158,16 @@ public class LectureController {
         return result;
     }
 
+    @GetMapping("/api/lectures/signed")
+    public List<Long> getSignedUsersIdForLecture(long lectureId) {
+        List<Long> result = new ArrayList<>();
+        List<Long> usersId = lectureDataService.getSignedUsersIdForLecture(lectureId);
+        usersId.forEach(userId -> result.add(userId));
+        return result;
+    }
+
     private boolean isAdmin(String sessionKey) {
         return userDataService.getUserBySessionKey(UUID.fromString(sessionKey)).isAdmin();
     }
+
 }

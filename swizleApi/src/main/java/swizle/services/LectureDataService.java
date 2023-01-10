@@ -115,4 +115,9 @@ public class LectureDataService implements ILectureDataService {
                 throw new IllegalArgumentException("Lecture containing given data already exists.");
         });
     }
+
+    @Override
+    public List<Long> getSignedUsersIdForLecture(long lectureId) {
+        return lectureRepository.getReferenceById(lectureId).getUsers().stream().map(User::getId).toList();
+    }
 }
