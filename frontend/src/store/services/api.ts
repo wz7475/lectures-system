@@ -138,7 +138,7 @@ export const api = createApi({
             providesTags: ["Opinions"]
         }),
         getUserOpinions: builder.query<OpinionsResponse, string>({
-            query: (id) => `/opinions/user?userId=${id}`,
+            query: (sessionKey) => `/opinions/user?sessionKey=${sessionKey}`,
             providesTags: ["UserOpinions"]
         }),
         addOpinion: builder.mutation<ProtectedRequest<Opinion>, Partial<ProtectedRequest<Opinion>>>({

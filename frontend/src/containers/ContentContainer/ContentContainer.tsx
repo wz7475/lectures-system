@@ -5,6 +5,7 @@ import LecturesPage from "../LecturesPage/LecturesPage";
 import LecturePage from "../LecturePage/LecturePage";
 import LectureAddPage from "../LectureAddPage/LectureAddPage";
 import LectureModifyPage from "../LectureModifyPage/LectureModifyPage";
+import ProfilePage from "../ProfilePage/ProfilePage";
 
 const ContentContainer: React.FC = () => {
     return (
@@ -19,7 +20,7 @@ const ContentContainer: React.FC = () => {
                 <Route path="/lectures/modify/" element={<Navigate to="/lectures/new" replace/>}/>
                 <Route path="/lectures/modify/:lectureId" element={<LectureModifyPage/>}/>
                 <Route path="/offers" element={<div>Offers</div>}/>
-                <Route path="/profile" element={<div>Profile</div>}/>
+                <Route path="/profile" element={<ProfilePage/>}/>
                 <Route path="/profile/:profileId" element={<div>Profile with ID</div>}/>
                 <Route path="*" element={<div>Page not found</div>}/>
             </Routes>
