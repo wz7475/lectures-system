@@ -1,6 +1,14 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import Lecture from "../models/Lecture";
+import Lecture from "../../common/Lecture";
+import Opinion from "../../common/Opinion";
 
+
+export type ProtectedRequest<T> = {
+    session: string,
+    data: T
+}
+
+// region Authentication
 export interface UserResponse {
     sessionKey: string;
     admin: boolean;
@@ -14,17 +22,18 @@ export interface LoginRequest {
 export interface LogoutRequest {
     sessionKey: string;
 }
+// endregion
 
-type LecturesResponse = Lecture[];
+// region Lectures
+export type LecturesResponse = Lecture[];
+export type Id = number | string;
+// endregion
 
-type ProtectedRequest<T> = {
-    session: string,
-    data: T
-}
+// region Opinions
+export type OpinionsResponse = Opinion[];
+// endregion
 
-type LectureId = number | string;
-
-const tagTypes = ["Lectures", "SignupLectures"];
+const tagTypes = ["Lectures", "SignupLectures", "Opinions"];
 
 export const api = createApi({
     reducerPath: "authApi",
@@ -33,6 +42,8 @@ export const api = createApi({
     }),
     tagTypes: tagTypes,
     endpoints: (builder) => ({
+
+        // region Authentication
         login: builder.mutation<UserResponse, LoginRequest>({
             query: (credentials) => ({
                 url: "user/login",
@@ -58,11 +69,14 @@ export const api = createApi({
             }),
             invalidatesTags: ["SignupLectures"]
         }),
+        // endregion
+
+        // region Lectures
         getLectures: builder.query<LecturesResponse, void>({
             query: () => "/lectures",
             providesTags: ["Lectures"]
         }),
-        getLecture: builder.query<Lecture, LectureId>({
+        getLecture: builder.query<Lecture, Id>({
             query: (id) => `/lectures/lecture?id=${id}`,
             providesTags: ["Lectures"]
         }),
@@ -86,27 +100,47 @@ export const api = createApi({
             }),
             invalidatesTags: ["Lectures"]
         }),
-        deleteLecture: builder.mutation<void, ProtectedRequest<LectureId>>({
+        deleteLecture: builder.mutation<void, ProtectedRequest<Id>>({
             query: (data) => ({
                 url: `/lectures?lectureId=${data.data}&sessionKey=${data.session}`,
                 method: "DELETE"
             }),
             invalidatesTags: ["Lectures"]
         }),
-        signupLecture: builder.mutation<ProtectedRequest<LectureId>, Partial<ProtectedRequest<number>>>({
+        signupLecture: builder.mutation<ProtectedRequest<Id>, Partial<ProtectedRequest<number>>>({
             query: (data) => ({
                 url: `/lectures/signup?lectureId=${data.data}&sessionKey=${data.session}`,
                 method: "POST"
             }),
             invalidatesTags: ["SignupLectures"]
         }),
-        optoutLecture: builder.mutation<ProtectedRequest<LectureId>, Partial<ProtectedRequest<number>>>({
+        optoutLecture: builder.mutation<ProtectedRequest<Id>, Partial<ProtectedRequest<number>>>({
             query: (data) => ({
                 url: `/lectures/optout?lectureId=${data.data}&sessionKey=${data.session}`,
                 method: "DELETE"
             }),
             invalidatesTags: ["SignupLectures"]
+        }),
+        // endregion
+
+        // region Opinions
+        getLectureOpinions: builder.query<OpinionsResponse, Id>({
+            query: (id) => `/opinions/lecture?lectureId=${id}`,
+            providesTags: ["Opinions"]
+        }),
+        getOpinion: builder.query<Opinion, Id>({
+            query: (id) => `/opinions/opinion?id=${id}`,
+            providesTags: ["Opinions"]
+        }),
+        addOpinion: builder.mutation<ProtectedRequest<Opinion>, Partial<ProtectedRequest<Opinion>>>({
+            query: (data) => ({
+                url: `/opinions?sessionKey=${data.session}`,
+                method: "POST",
+                body: data.data
+            }),
+            invalidatesTags: ["Opinions"]
         })
+        // endregion
     })
 })
 
@@ -121,7 +155,10 @@ export const {
     useModifyLectureMutation,
     useDeleteLectureMutation,
     useSignupLectureMutation,
-    useOptoutLectureMutation
+    useOptoutLectureMutation,
+    useGetLectureOpinionsQuery,
+    useGetOpinionQuery,
+    useAddOpinionMutation
 } = api;
 
 

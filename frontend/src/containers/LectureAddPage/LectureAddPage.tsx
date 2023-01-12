@@ -3,7 +3,7 @@ import "./LectureAddPage.css";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, AppState} from "../../store/store";
 import Loading from "../../components/Loading/Loading";
-import Lecture from "../../store/models/Lecture";
+import Lecture from "../../common/Lecture";
 import {Navigate} from "react-router";
 
 const LectureAddPage: React.FC = () => {

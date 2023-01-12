@@ -1,18 +1,45 @@
-import React from "react";
+import React, {useState} from "react";
 import {useParams} from "react-router";
-import {useGetLectureQuery} from "../../store/services/api";
+import {useAddOpinionMutation, useGetLectureQuery} from "../../store/services/api";
 import Loading from "../../components/Loading/Loading";
 import LecturesListElementControls from "../LecturesPage/LecturesListElementControls/LecturesListElementControls";
 import "./LecturePage.css";
-import Weekdays from "../../store/models/common/Weekdays";
+import Weekdays from "../../common/Weekdays";
+import {useSelector} from "react-redux";
+import {selectIsAdmin, selectSessionKey} from "../../store/features/authSlice";
+import OpinionList from "./OpinionsList/OpinionList";
 
 const LecturePage: React.FC = () => {
     const {lectureId} = useParams();
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+    const [opinionContent, setOpinionContent] = useState<string>("");
+
+    const isAdmin = useSelector(selectIsAdmin);
+    const sessionKey = useSelector(selectSessionKey);
+
     const {data: lecture, isFetching} = useGetLectureQuery(lectureId!);
+    const [addOpinion, {isLoading: isLoadingAddOpinion}] = useAddOpinionMutation();
 
     const formatTime = (hours: number, minutes: number): string => {
         let formattedMinutes = minutes > 9 ? minutes.toString() : `0${minutes}`;
         return `${hours}:${formattedMinutes}`;
+    }
+
+    const handleSendOpinion = async () => {
+        if (lectureId === undefined)
+            return;
+
+        await addOpinion({
+            session: sessionKey,
+            data: {
+                id: 0,
+                lectureId: parseInt(lectureId),
+                userId: 0,
+                createdAt: 0,
+                content: opinionContent
+            }
+        });
+        setDialogOpen(false);
     }
 
     if (isFetching) {
@@ -22,7 +49,7 @@ const LecturePage: React.FC = () => {
     if (lectureId === undefined || lecture === undefined) {
         return (
             <div>
-                Lecture not found
+                Sorry, we cannot find this lecture
             </div>
         );
     }
@@ -57,16 +84,28 @@ const LecturePage: React.FC = () => {
             <div className="lecture-box lecture-opinion-box">
                 <div className="lecture-box-bar">
                     <div className="lecture-box-title">Opinions</div>
-                    <button className="lecture-box-bar-button blue"><i className="icon-message"/>New</button>
+                    {!isAdmin && (
+                        <button className="lecture-box-bar-button blue" onClick={() => setDialogOpen(true)}
+                                disabled={dialogOpen}><i className="icon-message"/>New</button>
+                    )}
                 </div>
 
-                <div className="lecture-opinion-add">
-                    <textarea placeholder="Your opinion"></textarea>
-                    <button className="blue">Send</button>
-                    <button>Cancel</button>
-                </div>
+                {!isAdmin && dialogOpen && (
+                    isLoadingAddOpinion ? (
+                        <Loading/>
+                    ) : (
+                        <div className="lecture-opinion-add">
+                    <textarea placeholder="Your opinion"
+                              onChange={(event) => setOpinionContent(event.target.value)}/>
+                            <div className="lecture-opinion-add-controls">
+                                <button className="blue" onClick={handleSendOpinion}>Send</button>
+                                <button onClick={() => setDialogOpen(false)}>Cancel</button>
+                            </div>
+                        </div>
+                    )
+                )}
 
-                @TODO Opinions
+                <OpinionList id={parseInt(lectureId)}/>
             </div>
         </div>
     );

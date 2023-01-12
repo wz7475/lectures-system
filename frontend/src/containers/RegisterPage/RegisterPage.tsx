@@ -4,7 +4,7 @@ import Loading from "../../components/Loading/Loading";
 import logo from "../../logo.svg";
 import "./../LoginPage/LoginPage.css";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
-import APIErrorData from "../../store/models/common/apiErrorData";
+import APIErrorData from "../../common/apiErrorData";
 import {NavLink, useNavigate} from "react-router-dom";
 
 const RegisterPage: React.FC = () => {

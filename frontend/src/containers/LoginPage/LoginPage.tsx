@@ -4,7 +4,7 @@ import Loading from "../../components/Loading/Loading";
 import logo from "../../logo.svg";
 import "./LoginPage.css";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
-import APIErrorData from "../../store/models/common/apiErrorData";
+import APIErrorData from "../../common/apiErrorData";
 import {NavLink} from "react-router-dom";
 import {setCredentials} from "../../store/features/authSlice";
 import {useDispatch} from "react-redux";

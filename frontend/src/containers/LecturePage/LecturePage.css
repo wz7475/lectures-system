@@ -63,3 +63,11 @@
 .lecture-opinion-add {
     display: grid;
 }
+
+.lecture-opinion-add-controls {
+    display: flex;
+    grid-gap: 16px;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 16px;
+}

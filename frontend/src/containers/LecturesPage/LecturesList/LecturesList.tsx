@@ -1,10 +1,10 @@
-import React, {useEffect} from "react";
+import React from "react";
 import LecturesListElement from "../LecturesListElement/LecturesListElement";
 import "./LecturesList.css";
 import Loading from "../../../components/Loading/Loading";
 import {useGetLecturesQuery} from "../../../store/services/api";
 import lodash from "lodash";
-import weekdays from "../../../store/models/common/Weekdays";
+import weekdays from "../../../common/Weekdays";
 
 const LecturesList: React.FC = () => {
     const {data: lectures, isLoading} = useGetLecturesQuery();
