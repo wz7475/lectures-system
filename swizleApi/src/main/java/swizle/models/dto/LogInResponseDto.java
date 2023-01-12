@@ -2,11 +2,11 @@ package swizle.models.dto;
 
 import java.util.UUID;
 
-public class SessionResponseDto {
+public class LogInResponseDto {
     private UUID sessionKey;
     private boolean isAdmin;
 
-    public SessionResponseDto(UUID sessionKey, boolean isAdmin) {
+    public LogInResponseDto(UUID sessionKey, boolean isAdmin) {
         this.sessionKey = sessionKey;
         this.isAdmin = isAdmin;
     }

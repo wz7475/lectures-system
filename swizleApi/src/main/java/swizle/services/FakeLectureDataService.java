@@ -125,6 +125,17 @@ public class FakeLectureDataService implements ILectureDataService {
         userLectures.removeIf(userLecture -> userLecture.getLectureId() == lectureId && userLecture.getUserId() == userId);
     }
 
+    public List<Long> getSignedUsersIdForLecture(long lectureId) {
+        validateLectureId(lectureId);
+        ArrayList<Long> result = new ArrayList<>();
+        userLectures.forEach(userLecture -> {
+            if(userLecture.getLectureId() == lectureId)
+                result.add(userLecture.getUserId());
+        });
+
+        return result;
+    }
+
     private void validateLectureId(long lectureId) throws InvalidParameterException {
         boolean lectureExists = false;
 

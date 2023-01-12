@@ -1,16 +1,36 @@
 package swizle.models;
 
+import jakarta.persistence.*;
+
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
+@Entity
+@Table(name = "Lectures")
 public class Lecture implements IModel {
+    @Id
+    @SequenceGenerator(name = "lecture_id_sequence", sequenceName = "lecture_id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "lecture_id_sequence")
     private long id;
     private String name;
     private DayOfWeek dayOfWeek;
     private LocalTime beginTime;
+
     private Duration duration;
+
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(
+            name = "lectures_users",
+            joinColumns = @JoinColumn(name = "lecture_id"),
+            inverseJoinColumns = @JoinColumn(name = "users_id")
+    )
+    private Set<User> users = new HashSet<>();
+
+    public Lecture() { }
 
     public Lecture(long id, String name, DayOfWeek dayOfWeek, LocalTime beginTime, Duration duration) {
         this.id = id;
@@ -58,6 +78,24 @@ public class Lecture implements IModel {
 
     public void setDuration(Duration duration) {
         this.duration = duration;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public void addUser(User user) {
+        users.add(user);
+        user.getLectures().add(this);
+    }
+
+    public void removeUser(User user) {
+        users.remove(user);
+        user.getLectures().remove(this);
     }
 
     @Override

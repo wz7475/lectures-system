@@ -1,10 +1,31 @@
 package swizle.models;
 
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "Users")
 public class User implements IModel {
+    @Id
+    @SequenceGenerator(name = "user_id_sequence", sequenceName = "user_id_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_sequence")
     private long id;
+
+    @Column(unique = true, nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private boolean isAdmin;
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Lecture> lectures = new HashSet<>();
+
+    public User() {}
 
     public User(String name, String password) {
         this.name = name;
@@ -55,5 +76,13 @@ public class User implements IModel {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public Set<Lecture> getLectures() {
+        return lectures;
+    }
+
+    public void setLectures(Set<Lecture> lectures) {
+        this.lectures = lectures;
     }
 }
