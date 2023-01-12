@@ -9,6 +9,7 @@ interface ILectureContainer {
 
 const LectureContainer: React.FC<ILectureContainer> = (props) => {
     const lecture = props.lecture;
+
     const [name, setName] = useState(lecture.name);
     const [dayOfWeek, setDayOfWeek] = useState(lecture.dayOfWeek);
     const [beginTimeHour, setBeginTimeHour] = useState(lecture.beginTimeHour);
@@ -16,8 +17,8 @@ const LectureContainer: React.FC<ILectureContainer> = (props) => {
     const [durationHours, setDurationHours] = useState(lecture.durationHours);
     const [durationMinutes, setDurationMinutes] = useState(lecture.durationMinutes);
 
-    const update = () => {
-        props.onChange({
+    const update = (obj: Object) => {
+        const lec = {
             id: lecture.id,
             name,
             dayOfWeek,
@@ -25,7 +26,9 @@ const LectureContainer: React.FC<ILectureContainer> = (props) => {
             beginTimeMinute,
             durationHours,
             durationMinutes
-        });
+        };
+
+        props.onChange({...lec, ...obj});
     }
 
     return (
@@ -35,14 +38,20 @@ const LectureContainer: React.FC<ILectureContainer> = (props) => {
                     Name:
                 </div>
                 <input type="text" placeholder="Name" value={name}
-                       onChange={(event) => { setName(event.target.value); update()}}/>
+                       onChange={(event) => {
+                           setName(event.target.value);
+                           update({name: event.target.value});
+                       }}/>
             </div>
 
             <div className="input-container">
                 <div className="input-label">
                     Day of Week
                 </div>
-                <select onChange={(event) => { setDayOfWeek(parseInt(event.target.value)); update()}}>
+                <select onChange={(event) => {
+                    setDayOfWeek(parseInt(event.target.value));
+                    update({dayOfWeek: event.target.value});
+                }} value={dayOfWeek}>
                     <option value="1">Monday</option>
                     <option value="2">Tuesday</option>
                     <option value="3">Wednesday</option>
@@ -59,9 +68,15 @@ const LectureContainer: React.FC<ILectureContainer> = (props) => {
                 </div>
                 <div className="input-container-content">
                     <input type="number" min="0" max="24" step="1" placeholder="Hour" value={beginTimeHour}
-                           onChange={(event) =>{ setBeginTimeHour(parseInt(event.target.value)); update()}}/>
+                           onChange={(event) => {
+                               setBeginTimeHour(parseInt(event.target.value));
+                               update({beginTimeHour: event.target.value});
+                           }}/>
                     <input type="number" min="0" max="60" step="1" placeholder="Minute" value={beginTimeMinute}
-                           onChange={(event) =>{setBeginTimeMinute(parseInt(event.target.value)); update()}}/>
+                           onChange={(event) => {
+                               setBeginTimeMinute(parseInt(event.target.value));
+                               update({beginTimeMinute: event.target.value});
+                           }}/>
                 </div>
             </div>
 
@@ -71,9 +86,15 @@ const LectureContainer: React.FC<ILectureContainer> = (props) => {
                 </div>
                 <div className="input-container-content">
                     <input type="number" min="0" max="24" step="1" placeholder="Hour" value={durationHours}
-                           onChange={(event) => {setDurationHours(parseInt(event.target.value)); update()}}/>
+                           onChange={(event) => {
+                               setDurationHours(parseInt(event.target.value));
+                               update({durationHours: event.target.value});
+                           }}/>
                     <input type="number" min="0" max="60" step="1" placeholder="Minute" value={durationMinutes}
-                           onChange={(event) => {setDurationMinutes(parseInt(event.target.value)); update()}}/>
+                           onChange={(event) => {
+                               setDurationMinutes(parseInt(event.target.value));
+                               update({durationMinutes: event.target.value});
+                           }}/>
 
                 </div>
             </div>

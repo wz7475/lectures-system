@@ -21,7 +21,7 @@ const App: React.FC = () => {
             <>
                 {isLoading && <LoadingOverlay/>}
                 <Routes>
-                    <Route path="/" element={<LoginPage/>}/>
+                    <Route path="*" element={<LoginPage/>}/>
                     <Route path="/register" element={<RegisterPage/>}/>
                 </Routes>
             </>
