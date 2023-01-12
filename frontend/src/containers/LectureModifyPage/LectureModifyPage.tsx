@@ -34,7 +34,7 @@ const LectureModifyPage: React.FC = () => {
         navigate(`/lectures/${lectureId}`);
     }
 
-    if (isLoadingAddLecture) {
+    if (isLoadingAddLecture || isFetching) {
         return <Loading/>;
     }
 
