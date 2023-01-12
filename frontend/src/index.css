@@ -23,7 +23,7 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-input, button, textarea {
+input, button, textarea, select {
     border: 0;
     margin: 0;
     outline: 0;
@@ -35,7 +35,7 @@ input, button, textarea {
     transition: all 250ms ease;
 }
 
-input:focus, button:focus, a:focus, textarea:focus {
+input:focus, button:focus, a:focus, textarea:focus, select:focus {
     outline: 3px dashed #ee4540;
 }
 

@@ -4,6 +4,7 @@ import {Navigate, Route, Routes} from "react-router";
 import LecturesPage from "../LecturesPage/LecturesPage";
 import LecturePage from "../LecturePage/LecturePage";
 import LectureAddPage from "../LectureAddPage/LectureAddPage";
+import LectureModifyPage from "../LectureModifyPage/LectureModifyPage";
 
 const ContentContainer: React.FC = () => {
     return (
@@ -16,7 +17,7 @@ const ContentContainer: React.FC = () => {
                 <Route path="/lectures/:lectureId" element={<LecturePage/>} />
                 <Route path="/lectures/new/*" element={<LectureAddPage/>} />
                 <Route path="/lectures/modify/" element={<Navigate to="/lectures/new" replace/>}/>
-                <Route path="/lectures/modify/:lectureId" element={<div className="temporary-disabled">This function is temporary disabled</div>}/>
+                <Route path="/lectures/modify/:lectureId" element={<LectureModifyPage/>}/>
                 <Route path="/offers" element={<div>Offers</div>}/>
                 <Route path="/profile" element={<div>Profile</div>}/>
                 <Route path="/profile/:profileId" element={<div>Profile with ID</div>}/>

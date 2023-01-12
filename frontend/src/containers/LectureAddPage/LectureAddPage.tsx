@@ -1,59 +1,49 @@
 import React, {useState} from "react";
 import "./LectureAddPage.css";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppState} from "../../store/store";
+import {useAddLectureMutation} from "../../store/services/api";
+import {useSelector} from "react-redux";
+import {selectSessionKey} from "../../store/features/authSlice";
 import Loading from "../../components/Loading/Loading";
+import LectureContainer from "../LectureContainer/LectureContainer";
 import Lecture from "../../common/Lecture";
-import {Navigate} from "react-router";
+import {useNavigate} from "react-router-dom";
+
+const defaultLecture = {
+    id: 0,
+    name: "Lecture",
+    dayOfWeek: 1,
+    beginTimeHour: 12,
+    beginTimeMinute: 0,
+    durationHours: 1,
+    durationMinutes: 30
+}
 
 const LectureAddPage: React.FC = () => {
+    const sessionKey = useSelector(selectSessionKey);
+    const navigate = useNavigate();
+    const [newLecture, setNewLecture] = useState<Lecture>(defaultLecture);
+
+    const [addLecture, {isLoading: isLoadingAddLecture}] = useAddLectureMutation();
+
+    const handleAdd = async () => {
+        await addLecture({
+            session: sessionKey,
+            data: newLecture
+        });
+        navigate(`/lectures`);
+    }
+
+    if (isLoadingAddLecture) {
+        return <Loading/>;
+    }
+
     return (
-        <div>T</div>
+        <div className="page-content">
+            <div className="page-title">Add lecture</div>
+            <LectureContainer lecture={defaultLecture} onChange={(lec) => setNewLecture(lec)}/>
+            <button onClick={handleAdd} className="blue">Add</button>
+        </div>
     );
-    // const dispatch: AppDispatch = useDispatch();
-    // const [sent, setSent] = useState<boolean>(false);
-    // const [name, setName] = useState('');
-    // const [dayOfWeek, setDayOfWeek] = useState(0);
-    // const [beginTimeHour, setBeginTimeHour] = useState(0);
-    // const [beginTimeMinutes, setBeginTimeMinutes] = useState(0);
-    // const [durationHours, setDurationHours] = useState(0);
-    // const [durationMinutes, setDurationMinutes] = useState(0);
-    // const state = useSelector<AppState, EState>((state) => state.lectures.state);
-    // const lectures = useSelector<AppState, Lecture[]>((state) => state.lectures.lectures);
-    //
-    // const handleClick = () => {
-    //     dispatch(addLecture({id: 0, name, dayOfWeek, beginTimeHour, beginTimeMinutes, durationHours, durationMinutes}));
-    //     setSent(true);
-    // }
-    //
-    // if (state == EState.Pending) {
-    //     return <Loading/>;
-    // }
-    //
-    // if (state === EState.Complete && sent) {
-    //     return <Navigate to={"/lectures/" + lectures[lectures.length - 1].id.toString()} />
-    // }
-    //
-    // return (
-    //     <div className="lecture-add-page">
-    //         <div>
-    //             <input type="text" placeholder="Name" value={name} onChange={(event) => setName(event.target.value)}/>
-    //             <input type="number" min="0" max="6" step="1" placeholder="DayOfWeek" value={dayOfWeek} onChange={(event) => setDayOfWeek(parseInt(event.target.value))}/>
-    //
-    //         </div>
-    //         <div>
-    //             <span>Begin Time:</span>
-    //             <input type="number" min="0" max="24" step="1" placeholder="Hour" value={beginTimeHour} onChange={(event) => setBeginTimeHour(parseInt(event.target.value))}/>
-    //             <input type="number" min="0" max="60" step="1" placeholder="Minute" value={beginTimeMinutes} onChange={(event) => setBeginTimeMinutes(parseInt(event.target.value))}/>
-    //         </div>
-    //         <div>
-    //             <span>Duration Time:</span>
-    //             <input type="number" min="0" max="24" step="1" placeholder="Hour" value={durationHours} onChange={(event) => setDurationHours(parseInt(event.target.value))}/>
-    //             <input type="number" min="0" max="60" step="1" placeholder="Minute" value={durationMinutes} onChange={(event) => setDurationMinutes(parseInt(event.target.value))}/>
-    //         </div>
-    //         <button onClick={handleClick}>Add lecture</button>
-    //     </div>
-    // );
 }
 
 export default LectureAddPage;
