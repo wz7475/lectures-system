@@ -8,7 +8,7 @@ import {
 import {useSelector} from "react-redux";
 import {selectIsAdmin, selectSessionKey} from "../../../store/features/authSlice";
 import Loading from "../../../components/Loading/Loading";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 
 interface ILectureListElementControlsProps {
     id: number;
@@ -17,6 +17,7 @@ interface ILectureListElementControlsProps {
 const LecturesListElementControls: React.FC<ILectureListElementControlsProps> = (props) => {
     const isAdmin = useSelector(selectIsAdmin);
     const sessionKey = useSelector(selectSessionKey);
+    const navigate = useNavigate();
 
     const {data: signupLectures, isFetching: isFetchingSignupLectures} = useGetSignupLecturesQuery(sessionKey);
     const [signup, {isLoading: isLoadingSignup}] = useSignupLectureMutation();
@@ -40,7 +41,8 @@ const LecturesListElementControls: React.FC<ILectureListElementControlsProps> = 
         deleteLecture({
             session: sessionKey,
             data: props.id
-        })
+        });
+        navigate("/lectures");
     }
 
 

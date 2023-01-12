@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useParams} from "react-router";
-import {useAddOpinionMutation, useGetLectureQuery} from "../../store/services/api";
+import {useAddOpinionMutation, useGetLectureQuery, useGetSignedForLectureQuery} from "../../store/services/api";
 import Loading from "../../components/Loading/Loading";
 import LecturesListElementControls from "../LecturesPage/LecturesListElementControls/LecturesListElementControls";
 import "./LecturePage.css";
@@ -8,6 +8,8 @@ import Weekdays from "../../common/Weekdays";
 import {useSelector} from "react-redux";
 import {selectIsAdmin, selectSessionKey} from "../../store/features/authSlice";
 import OpinionList from "./OpinionsList/OpinionList";
+import FetchError from "../../components/FetchError/FetchError";
+import SignedUser from "./SignedUser/SignedUser";
 
 const LecturePage: React.FC = () => {
     const {lectureId} = useParams();
@@ -19,6 +21,7 @@ const LecturePage: React.FC = () => {
 
     const {data: lecture, isFetching} = useGetLectureQuery(lectureId!);
     const [addOpinion, {isLoading: isLoadingAddOpinion}] = useAddOpinionMutation();
+    const {data: signed, isFetching: isFetchingSigned} = useGetSignedForLectureQuery(lectureId!);
 
     const formatTime = (hours: number, minutes: number): string => {
         let formattedMinutes = minutes > 9 ? minutes.toString() : `0${minutes}`;
@@ -78,7 +81,19 @@ const LecturePage: React.FC = () => {
 
             <div className="lecture-box">
                 <div className="lecture-box-title">Signed users</div>
-                @TODO Signed users list
+                <div className="lecture-signed">
+                {signed ? (
+                    signed.map(user => <SignedUser user={user}/>)
+                ) : (
+                    isFetchingSigned ? (
+                        <Loading/>
+                    ) : (
+                        <FetchError>
+                            <span>Cannot fetch information about signed users. Try again later</span>
+                        </FetchError>
+                    )
+                )}
+                </div>
             </div>
 
             <div className="lecture-box lecture-opinion-box">

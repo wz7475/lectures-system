@@ -122,6 +122,10 @@ export const api = createApi({
             }),
             invalidatesTags: ["SignupLectures"]
         }),
+        getSignedForLecture: builder.query<number[], Id>({
+            query: (id) => `/lectures/signed?lectureId=${id}`,
+            providesTags: ["SignupLectures"]
+        }),
         // endregion
 
         // region Opinions
@@ -133,7 +137,7 @@ export const api = createApi({
             query: (id) => `/opinions/opinion?id=${id}`,
             providesTags: ["Opinions"]
         }),
-        getUserOpinions: builder.query<OpinionsResponse, Id>({
+        getUserOpinions: builder.query<OpinionsResponse, string>({
             query: (id) => `/opinions/user?userId=${id}`,
             providesTags: ["UserOpinions"]
         }),
@@ -168,6 +172,7 @@ export const {
     useDeleteLectureMutation,
     useSignupLectureMutation,
     useOptoutLectureMutation,
+    useGetSignedForLectureQuery,
     useGetLectureOpinionsQuery,
     useGetOpinionQuery,
     useGetUserOpinionsQuery,

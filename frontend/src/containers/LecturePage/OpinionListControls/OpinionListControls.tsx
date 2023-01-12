@@ -11,9 +11,8 @@ interface IOpinionListControls {
 const OpinionListControls: React.FC<IOpinionListControls> = (props) => {
     const isAdmin = useSelector(selectIsAdmin);
     const sessionKey = useSelector(selectSessionKey);
-    const {data: userOpinions, isFetching: isFetchingUserOpinions} = useGetUserOpinionsQuery(1);
+    const {data: userOpinions, isFetching: isFetchingUserOpinions} = useGetUserOpinionsQuery(sessionKey);
     const [deleteOpinion, {isLoading}] = useDeleteOpinionMutation();
-    // @TODO: change to real userId
     const userOpinion = userOpinions ? userOpinions.some(opinion => opinion.id === props.id) : false;
 
     const handleDelete = () => {
