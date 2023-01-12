@@ -17,6 +17,10 @@ const ContentContainer: React.FC = () => {
                 <Route path="/lectures/new/*" element={<LectureAddPage/>} />
                 <Route path="/lectures/modify/" element={<Navigate to="/lectures/new" replace/>}/>
                 <Route path="/lectures/modify/:lectureId" element={<div className="temporary-disabled">This function is temporary disabled</div>}/>
+                <Route path="/offers" element={<div>Offers</div>}/>
+                <Route path="/profile" element={<div>Profile</div>}/>
+                <Route path="/profile/:profileId" element={<div>Profile with ID</div>}/>
+                <Route path="*" element={<div>Page not found</div>}/>
             </Routes>
         </div>
     );

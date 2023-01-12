@@ -22,7 +22,7 @@ const SidebarContainer: React.FC = () => {
                         Lectures
                     </>
                 </NavigationLink>
-                <NavigationLink to="/switches">
+                <NavigationLink to="/offers">
                     <>
                         <i className="icon-exchange"/>
                         Offers
