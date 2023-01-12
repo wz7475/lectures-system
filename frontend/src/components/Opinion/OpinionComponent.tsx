@@ -27,7 +27,7 @@ const OpinionComponent: React.FC<IOpinionProps> = (props) => {
     return (
         <div className="opinion-element">
             <div className="opinion-element-author">{data.userId}</div>
-            <div className="opinion-element-date">{new Date(data.createdAt * 1000).toUTCString()}</div>
+            <div className="opinion-element-date">{new Date(data.createdAt).toUTCString()}</div>
             <div className="opinion-element-content">{data.content}</div>
             <div className="opinion-element-controls">
                 {props.children}
