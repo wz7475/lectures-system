@@ -22,6 +22,7 @@ export interface LoginRequest {
 export interface LogoutRequest {
     sessionKey: string;
 }
+
 // endregion
 
 // region Lectures
@@ -132,13 +133,24 @@ export const api = createApi({
             query: (id) => `/opinions/opinion?id=${id}`,
             providesTags: ["Opinions"]
         }),
+        getUserOpinions: builder.query<OpinionsResponse, Id>({
+            query: (id) => `/opinions/user?userId=${id}`,
+            providesTags: ["UserOpinions"]
+        }),
         addOpinion: builder.mutation<ProtectedRequest<Opinion>, Partial<ProtectedRequest<Opinion>>>({
             query: (data) => ({
                 url: `/opinions?sessionKey=${data.session}`,
                 method: "POST",
                 body: data.data
             }),
-            invalidatesTags: ["Opinions"]
+            invalidatesTags: ["Opinions", "UserOpinions"]
+        }),
+        deleteOpinion: builder.mutation<void, ProtectedRequest<Id>>({
+            query: (data) => ({
+                url: `/opinions?opinionId=${data.data}&sessionKey=${data.session}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["Opinions", "UserOpinions"]
         })
         // endregion
     })
@@ -158,7 +170,9 @@ export const {
     useOptoutLectureMutation,
     useGetLectureOpinionsQuery,
     useGetOpinionQuery,
-    useAddOpinionMutation
+    useGetUserOpinionsQuery,
+    useAddOpinionMutation,
+    useDeleteOpinionMutation
 } = api;
 
 

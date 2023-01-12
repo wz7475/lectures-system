@@ -3,6 +3,7 @@ import {useGetLectureOpinionsQuery} from "../../../store/services/api";
 import Loading from "../../../components/Loading/Loading";
 import FetchError from "../../../components/FetchError/FetchError";
 import OpinionComponent from "../../../components/Opinion/OpinionComponent";
+import OpinionListControls from "../OpinionListControls/OpinionListControls";
 
 interface OpinionListProps {
     id: number;
@@ -25,7 +26,9 @@ const OpinionList: React.FC<OpinionListProps> = (props) => {
 
     return (
         <div className="opinions-list">
-            {opinions.map(opinion => <OpinionComponent id={opinion.id}/>)}
+            {opinions.map(opinion => <OpinionComponent id={opinion.id}>
+                <OpinionListControls id={opinion.id}/>
+            </OpinionComponent>)}
         </div>
     );
 }
