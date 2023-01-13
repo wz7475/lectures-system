@@ -4,14 +4,14 @@ import "./LecturesListControls.css";
 import {AppDispatch} from "../../../store/store";
 import {useDispatch, useSelector} from "react-redux";
 import {selectIsAdmin} from "../../../store/features/authSlice";
-import {api} from "../../../store/services/api";
+import {api, tagTypes} from "../../../store/services/api";
 
 const LecturesListControls: React.FC = () => {
     const dispatch: AppDispatch = useDispatch();
     const isAdmin = useSelector(selectIsAdmin);
 
     const handleClick = () => {
-        dispatch(api.util.invalidateTags(["Lectures"]));
+        dispatch(api.util.invalidateTags(tagTypes));
     }
 
     return (

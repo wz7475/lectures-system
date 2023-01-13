@@ -22,19 +22,22 @@ const SidebarContainer: React.FC = () => {
                         Lectures
                     </>
                 </NavigationLink>
-                <NavigationLink to="/offers">
-                    <>
-                        <i className="icon-exchange"/>
-                        Offers
-                    </>
-                </NavigationLink>
                 {!isAdmin && (
-                    <NavigationLink to="/profile">
-                        <>
-                            <i className="icon-user"/>
-                            My Profile
-                        </>
-                    </NavigationLink>
+                    <>
+                        <NavigationLink to="/offers">
+                            <>
+                                <i className="icon-exchange"/>
+                                Offers
+                            </>
+                        </NavigationLink>
+
+                        <NavigationLink to="/profile">
+                            <>
+                                <i className="icon-user"/>
+                                My Profile
+                            </>
+                        </NavigationLink>
+                    </>
                 )}
             </div>
             <div className="sidebar-container-logout">

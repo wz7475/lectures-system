@@ -46,7 +46,7 @@ export interface AcceptRequest {
 
 // endregion
 
-const tagTypes = ["Lectures", "SignupLectures", "Opinions", "Offers"];
+export const tagTypes = ["Lectures", "SignupLectures", "Opinions", "Offers"];
 
 export const api = createApi({
     reducerPath: "authApi",
@@ -201,7 +201,7 @@ export const api = createApi({
                 body: data.data!.userId,
                 headers: { "content-type": "application/json" }
             }),
-            invalidatesTags: ["Offers"]
+            invalidatesTags: tagTypes
         })
         // endregion
     })
