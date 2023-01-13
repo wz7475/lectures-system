@@ -2,7 +2,7 @@ import {Id} from "../store/services/api";
 
 export interface Offer {
     id: Id;
-    sellerId: number;
+    sellerId: Id;
     offeredLectureId: Id;
     returnedLectureId: Id;
 }

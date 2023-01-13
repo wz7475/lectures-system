@@ -7,15 +7,15 @@ import {
     useGetSignupLecturesQuery
 } from "../../store/services/api";
 import {useSelector} from "react-redux";
-import {selectSessionKey} from "../../store/features/authSlice";
+import {selectSessionKey, selectUserId} from "../../store/features/authSlice";
 import Loading from "../../components/Loading/Loading";
 import FetchError from "../../components/FetchError/FetchError";
 import OfferComponent from "./OfferComponent/OfferComponent";
 import Lecture from "../../common/Lecture";
 import Weekdays from "../../common/Weekdays";
-import {Offer} from "../../common/Offer";
 
 const OffersPage: React.FC = () => {
+    const userId = useSelector(selectUserId);
     const sessionKey = useSelector(selectSessionKey);
     const [offeredLecture, setOfferedLecture] = useState<Id>(0);
     const [wantedLecture, setWantedLecture] = useState<Id>(0);
@@ -40,7 +40,7 @@ const OffersPage: React.FC = () => {
             session: sessionKey,
             data: {
                 id: 0,
-                sellerId: 1,
+                sellerId: userId,
                 offeredLectureId: parseInt(offeredLecture.toString()),
                 returnedLectureId: parseInt(wantedLecture.toString())
             }
@@ -61,17 +61,9 @@ const OffersPage: React.FC = () => {
         </FetchError>
     }
 
-    // const matchingOffers = offers.filter(offer => {
-    //     userLectures.some(lecture => lecture.id === offer.returnedLectureId)
-    // });
-    const matchingOffers: Offer[] = [
-        {
-            id: 1,
-            sellerId: 1,
-            offeredLectureId: 36,
-            returnedLectureId: 44
-        }
-    ]
+    const matchingOffers = offers.filter(offer =>
+        userLectures.some(lecture => lecture.id === offer.returnedLectureId)
+    );
 
     return (
         <div className="page-content offers-page">
@@ -108,7 +100,7 @@ const OffersPage: React.FC = () => {
                     </div>
 
                     <button className="blue" onClick={handleAdd} disabled={isLoadingAddOffer}>
-                        { isLoadingAddOffer ? (
+                        {isLoadingAddOffer ? (
                             <Loading/>
                         ) : (
                             <>Add</>

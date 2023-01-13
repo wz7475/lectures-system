@@ -7,6 +7,7 @@ import OpinionListControls from "../LecturePage/OpinionListControls/OpinionListC
 import Loading from "../../components/Loading/Loading";
 import FetchError from "../../components/FetchError/FetchError";
 import LecturesListElement from "../LecturesPage/LecturesListElement/LecturesListElement";
+import UserOffers from "./UserOffers/UserOffers";
 
 const ProfilePage: React.FC = () => {
     const sessionKey = useSelector(selectSessionKey);
@@ -54,6 +55,16 @@ const ProfilePage: React.FC = () => {
                         </FetchError>
                     )
                 )}
+            </div>
+
+            <div className="lecture-box lecture-opinion-box">
+                <div className="lecture-box-bar">
+                    <div className="lecture-box-title">Your opinions</div>
+                </div>
+
+                <div className="lecture-box-content">
+                    <UserOffers/>
+                </div>
             </div>
         </div>
     );

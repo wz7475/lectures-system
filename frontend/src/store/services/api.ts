@@ -13,6 +13,7 @@ export type ProtectedRequest<T> = {
 export interface UserResponse {
     sessionKey: string;
     admin: boolean;
+    id: Id;
 }
 
 export interface LoginRequest {
