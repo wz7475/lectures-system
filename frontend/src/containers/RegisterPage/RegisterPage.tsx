@@ -15,15 +15,18 @@ const RegisterPage: React.FC = () => {
         password: ""
     });
 
-    const [register, {isLoading, isError, error}] = useRegisterMutation();
+    const [register, {isLoading, isError, error, isSuccess}] = useRegisterMutation();
 
     const handleChange = ({target: {name, value}}: React.ChangeEvent<HTMLInputElement>) =>
         setFormState((prev) => ({...prev, [name]: value}));
 
+    if (isSuccess) {
+        navigate("/");
+    }
+
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         await register(formState);
-        navigate("/");
     }
 
     let errorMessage;
