@@ -66,7 +66,8 @@ const LoginPage: React.FC = () => {
                                onChange={handleChange}
                         />
 
-                        <button className="login-form-button blue" type="submit"><i className="icon-log-in"/>Login</button>
+                        <button className="login-form-button blue" type="submit"><i className="icon-log-in"/>Login
+                        </button>
 
                         {isError && (
                             <div className="login-form-error">

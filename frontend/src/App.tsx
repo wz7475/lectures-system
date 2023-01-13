@@ -11,7 +11,7 @@ import {useSelector} from "react-redux";
 import {LoadingOverlay} from "./components/LoadingOverlay/LoadingOverlay";
 
 const App: React.FC = () => {
-    const [, { isLoading }] = useLogoutMutation({
+    const [, {isLoading}] = useLogoutMutation({
         fixedCacheKey: "shared-logout"
     });
     const sessionKey = useSelector(selectSessionKey);

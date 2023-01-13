@@ -3,7 +3,7 @@ import "../../../components/LectureElement/LectureElement.css";
 import LecturesListElementControls from "../LecturesListElementControls/LecturesListElementControls";
 import LectureElement from "../../../components/LectureElement/LectureElement";
 
-interface ILecturesListElementProps{
+interface ILecturesListElementProps {
     id: number;
 }
 

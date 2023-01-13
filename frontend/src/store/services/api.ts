@@ -199,7 +199,7 @@ export const api = createApi({
                 url: `/offers/accept/${data.data!.offerId}?sessionKey=${data.session}`,
                 method: "PUT",
                 body: data.data!.userId,
-                headers: { "content-type": "application/json" }
+                headers: {"content-type": "application/json"}
             }),
             invalidatesTags: tagTypes
         })

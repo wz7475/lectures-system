@@ -82,17 +82,17 @@ const LecturePage: React.FC = () => {
             <div className="lecture-box">
                 <div className="lecture-box-title">Signed users</div>
                 <div className="lecture-signed">
-                {signed ? (
-                    signed.map(user => <SignedUser user={user}/>)
-                ) : (
-                    isFetchingSigned ? (
-                        <Loading/>
+                    {signed ? (
+                        signed.map(user => <SignedUser user={user}/>)
                     ) : (
-                        <FetchError>
-                            <span>Cannot fetch information about signed users. Try again later</span>
-                        </FetchError>
-                    )
-                )}
+                        isFetchingSigned ? (
+                            <Loading/>
+                        ) : (
+                            <FetchError>
+                                <span>Cannot fetch information about signed users. Try again later</span>
+                            </FetchError>
+                        )
+                    )}
                 </div>
             </div>
 
