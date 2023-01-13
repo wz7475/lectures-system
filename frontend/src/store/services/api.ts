@@ -1,6 +1,7 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import Lecture from "../../common/Lecture";
 import Opinion from "../../common/Opinion";
+import {Offer} from "../../common/Offer";
 
 
 export type ProtectedRequest<T> = {
@@ -34,7 +35,17 @@ export type Id = number | string;
 export type OpinionsResponse = Opinion[];
 // endregion
 
-const tagTypes = ["Lectures", "SignupLectures", "Opinions"];
+// region Offers
+export type OffersResponse = Offer[];
+
+export interface AcceptRequest {
+    offerId: Id;
+    userId: Id;
+}
+
+// endregion
+
+const tagTypes = ["Lectures", "SignupLectures", "Opinions", "Offers"];
 
 export const api = createApi({
     reducerPath: "authApi",
@@ -155,6 +166,42 @@ export const api = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ["Opinions", "UserOpinions"]
+        }),
+        // endregion
+
+        // region Offers
+        getOffers: builder.query<OffersResponse, string>({
+            query: (sessionKey) => `/offer?sessionKey=${sessionKey}`,
+            providesTags: ["Offers"]
+        }),
+        getOffer: builder.query<Offer, ProtectedRequest<Id>>({
+            query: (data) => `/offer/${data.data}?sessionKey=${data.session}`,
+            providesTags: ["Offers"]
+        }),
+        addOffer: builder.mutation<ProtectedRequest<Offer>, Partial<ProtectedRequest<Offer>>>({
+            query: (data) => ({
+                url: `/offers?sessionKey=${data.session}`,
+                method: "POST",
+                body: data.data
+            }),
+            invalidatesTags: ["Offers"]
+        }),
+        deleteOffer: builder.mutation<void, ProtectedRequest<Id>>({
+            query: (data) => ({
+                url: `/offers/${data.data}?sessionKey=${data.session}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["Offers"]
+        }),
+        acceptOffer: builder.mutation<ProtectedRequest<AcceptRequest>, Partial<ProtectedRequest<AcceptRequest>>>({
+            query: (data) => ({
+                url: `/offers/accept/${data.data!.offerId}?sessionKey=${data.session}`,
+                method: "PUT",
+                body: {
+                    buyerId: data.data!.userId
+                }
+            }),
+            invalidatesTags: ["Offers"]
         })
         // endregion
     })
@@ -177,7 +224,12 @@ export const {
     useGetOpinionQuery,
     useGetUserOpinionsQuery,
     useAddOpinionMutation,
-    useDeleteOpinionMutation
+    useDeleteOpinionMutation,
+    useGetOffersQuery,
+    useGetOfferQuery,
+    useAddOfferMutation,
+    useDeleteOfferMutation,
+    useAcceptOfferMutation
 } = api;
 
 
