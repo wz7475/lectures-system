@@ -7,6 +7,10 @@ public class LogInResponseDto {
     private boolean isAdmin;
     private long userId;
 
+    public LogInResponseDto() {
+
+    }
+
     public LogInResponseDto(UUID sessionKey, boolean isAdmin) {
         this.sessionKey = sessionKey;
         this.isAdmin = isAdmin;
@@ -33,4 +37,8 @@ public class LogInResponseDto {
     public void setAdmin(boolean admin) {
         isAdmin = admin;
     }
+
+    public long getUserId() { return userId; }
+
+    public void setUserId(long userId) { this.userId = userId; }
 }
