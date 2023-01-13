@@ -5,28 +5,28 @@ import {Id} from "../services/api";
 type AuthState = {
     sessionKey: string;
     admin: boolean;
-    id: Id;
+    userId: Id;
 }
 
 const initialState: AuthState = {
     sessionKey: "",
     admin: false,
-    id: 0
+    userId: 0
 }
 
 const slice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        setCredentials: (state, {payload: {sessionKey, admin, id}}: PayloadAction<AuthState>) => {
+        setCredentials: (state, {payload: {sessionKey, admin, userId}}: PayloadAction<AuthState>) => {
             state.sessionKey = sessionKey;
             state.admin = admin;
-            state.id = id;
+            state.userId = userId;
         },
         removeCredentials: (state) => {
             state.sessionKey = "";
             state.admin = false;
-            state.id = 0;
+            state.userId = 0;
         }
     }
 });
@@ -36,4 +36,4 @@ export default slice.reducer;
 export const selectSessionKey = (state: AppState) => state.auth.sessionKey;
 export const selectIsAdmin = (state: AppState) => state.auth.admin;
 
-export const selectUserId = (state: AppState) => state.auth.id;
+export const selectUserId = (state: AppState) => state.auth.userId;

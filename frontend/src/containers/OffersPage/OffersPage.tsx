@@ -80,6 +80,7 @@ const OffersPage: React.FC = () => {
                             Lecture to offer
                         </div>
                         <select onChange={(event) => setOfferedLecture(event.target.value)}>
+                            <option value="" disabled selected>Select your lecture</option>
                             {userLectures.map(lecture => <option key={lecture.id}
                                                                  value={lecture.id}>
                                 {formatLecture(lecture)}
@@ -92,6 +93,7 @@ const OffersPage: React.FC = () => {
                             Wanted lecture
                         </div>
                         <select onChange={(event) => setWantedLecture(event.target.value)}>
+                            <option value="" disabled selected>Select wanted lecture</option>
                             {lectures.map(lecture => <option key={lecture.id}
                                                              value={lecture.id}>
                                 {formatLecture(lecture)}

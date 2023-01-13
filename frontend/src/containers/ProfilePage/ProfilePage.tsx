@@ -59,7 +59,7 @@ const ProfilePage: React.FC = () => {
 
             <div className="lecture-box lecture-opinion-box">
                 <div className="lecture-box-bar">
-                    <div className="lecture-box-title">Your opinions</div>
+                    <div className="lecture-box-title">Your offers</div>
                 </div>
 
                 <div className="lecture-box-content">

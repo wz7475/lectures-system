@@ -13,7 +13,7 @@ export type ProtectedRequest<T> = {
 export interface UserResponse {
     sessionKey: string;
     admin: boolean;
-    id: Id;
+    userId: Id;
 }
 
 export interface LoginRequest {
@@ -198,9 +198,7 @@ export const api = createApi({
             query: (data) => ({
                 url: `/offers/accept/${data.data!.offerId}?sessionKey=${data.session}`,
                 method: "PUT",
-                body: {
-                    buyerId: data.data!.userId
-                }
+                body: data.data!.userId
             }),
             invalidatesTags: ["Offers"]
         })
