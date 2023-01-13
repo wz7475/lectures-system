@@ -1,0 +1,56 @@
+.lecture-name {
+    font-size: 36px;
+    letter-spacing: 1px;
+}
+
+.lecture-information {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 16px 0;
+}
+
+.lecture-controls {
+    padding-top: 12px;
+    grid-auto-flow: column;
+    display: grid;
+    grid-gap: 16px;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.lecture-part {
+    color: #ddd;
+    font-size: 18px;
+    margin: 4px 0;
+}
+
+.lecture-opinion-box textarea {
+    width: calc(100% - 32px);
+    height: 100px;
+    resize: none;
+}
+
+.lecture-opinion-add {
+    display: grid;
+}
+
+.lecture-opinion-add-controls {
+    display: flex;
+    grid-gap: 16px;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.lecture-signed {
+    display: grid;
+    justify-content: start;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    grid-gap: 16px;
+    padding: 16px 0;
+    grid-auto-flow: column;
+}

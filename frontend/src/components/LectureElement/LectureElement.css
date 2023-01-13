@@ -1,0 +1,39 @@
+.lecture-element {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    margin: 16px 0;
+    max-height: 50px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.lecture-element a {
+    flex-grow: 1;
+}
+
+.lecture-element-part {
+    float: left;
+    font-size: 20px;
+    line-height: 2em;
+    padding: 0 24px;
+}
+
+.lecture-element-part:first-child {
+    padding-left: 8px;
+}
+
+.lecture-element-part:last-child {
+    padding-right: 8px;
+    flex-grow: 1;
+}
+
+.lecture-element-id {
+    border-right: 1px solid grey;
+}
+
+.lecture-element-controls {
+    display: flex;
+    grid-gap: 16px;
+}

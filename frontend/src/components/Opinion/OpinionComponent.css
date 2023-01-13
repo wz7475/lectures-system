@@ -1,0 +1,28 @@
+.opinion-element {
+    position: relative;
+    padding: 16px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.opinion-element-author {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.opinion-element-date {
+    position: absolute;
+    right: 0;
+    color: #ddd;
+    top: 16px;
+}
+
+.opinion-element-content {
+    padding: 12px 0;
+}
+
+.opinion-element-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    grid-gap: 16px;
+}

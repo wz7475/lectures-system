@@ -1,0 +1,11 @@
+.page-title {
+    font-size: 2em;
+}
+
+.lecture-add-inputs {
+    display: flex;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+    grid-gap: 16px;
+}

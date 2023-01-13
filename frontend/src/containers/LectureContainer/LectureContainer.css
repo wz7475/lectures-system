@@ -1,0 +1,12 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 16px;
+    padding: 16px 0;
+}
+
+.input-container-content {
+    display: flex;
+    flex-direction: row;
+    grid-gap: 16px;
+}

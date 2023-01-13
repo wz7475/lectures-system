@@ -1,0 +1,41 @@
+.app {
+    text-align: center;
+}
+
+.temporary-disabled {
+    color: #ee4540;
+    font-size: 12px;
+    padding: 4px;
+}
+
+.lecture-box {
+    padding: 32px;
+    margin: 16px 0;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.lecture-box:first-child {
+    margin-top: 0;
+}
+
+.lecture-box-bar {
+    display: grid;
+    position: relative;
+    align-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.lecture-box-title {
+    font-size: 24px;
+}
+
+.lecture-box-bar-button {
+    position: absolute;
+    right: 0;
+    justify-content: right;
+}
+
+.lecture-box-content {
+    padding: 16px 0;
+}
