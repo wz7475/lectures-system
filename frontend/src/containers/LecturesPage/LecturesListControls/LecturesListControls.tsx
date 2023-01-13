@@ -16,13 +16,12 @@ const LecturesListControls: React.FC = () => {
 
     return (
         <div className="lectures-list-controls">
-            {isAdmin ? (
+            {isAdmin && (
                 <NavLink to="/lectures/new">
                     <button className="blue">New</button>
                 </NavLink>
-            ) : (
-                <button onClick={handleClick}><i className="icon-loader"/>Refresh</button>
             )}
+            <button onClick={handleClick}><i className="icon-loader"/>Refresh</button>
         </div>
     );
 };
