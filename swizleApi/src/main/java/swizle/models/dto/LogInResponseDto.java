@@ -5,10 +5,17 @@ import java.util.UUID;
 public class LogInResponseDto {
     private UUID sessionKey;
     private boolean isAdmin;
+    private long userId;
 
     public LogInResponseDto(UUID sessionKey, boolean isAdmin) {
         this.sessionKey = sessionKey;
         this.isAdmin = isAdmin;
+    }
+
+    public LogInResponseDto(UUID sessionKey, boolean isAdmin, long userId) {
+        this.sessionKey = sessionKey;
+        this.isAdmin = isAdmin;
+        this.userId = userId;
     }
 
     public UUID getSessionKey() {
