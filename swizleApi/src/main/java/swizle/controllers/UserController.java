@@ -73,7 +73,8 @@ public class UserController {
         }
 
         return new LogInResponseDto(startedSession.getId(),
-                userDataService.getUserByNameAndPassword(userCredentials.getName(), userCredentials.getPassword()).isAdmin());
+                userDataService.getUserByNameAndPassword(userCredentials.getName(), userCredentials.getPassword()).isAdmin(),
+                userDataService.getUserByNameAndPassword(userCredentials.getName(), userCredentials.getPassword()).getId());
     }
 
     @DeleteMapping(value = "/api/user/logout", headers = { "content-type=application/json" })
