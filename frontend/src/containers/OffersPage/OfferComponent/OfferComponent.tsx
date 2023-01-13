@@ -4,13 +4,14 @@ import LectureElement from "../../../components/LectureElement/LectureElement";
 import Loading from "../../../components/Loading/Loading";
 import {useAcceptOfferMutation} from "../../../store/services/api";
 import {useSelector} from "react-redux";
-import {selectSessionKey} from "../../../store/features/authSlice";
+import {selectSessionKey, selectUserId} from "../../../store/features/authSlice";
 
 interface IOfferComponent {
     offer: Offer
 }
 
 const OfferComponent: React.FC<IOfferComponent> = (props) => {
+    const userId = useSelector(selectUserId);
     const sessionKey = useSelector(selectSessionKey);
     const [acceptOffer, {isLoading}] = useAcceptOfferMutation();
 
@@ -18,7 +19,7 @@ const OfferComponent: React.FC<IOfferComponent> = (props) => {
         await acceptOffer({
             session: sessionKey,
             data: {
-                userId: 1,
+                userId: userId,
                 offerId: props.offer.id
             }
         })

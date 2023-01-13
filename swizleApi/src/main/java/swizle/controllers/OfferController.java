@@ -76,7 +76,7 @@ public class OfferController {
         offerDataService.deleteItem(id);
     }
 
-    @PutMapping(value = "/api/offers/accept/{offerId}", headers = {"content-type=text/plain;charset=UTF-8"})
+    @PutMapping(value = "/api/offers/accept/{offerId}", headers = {"content-type=application/json"})
     public void acceptOffer(String sessionKey, @PathVariable long offerId, @RequestBody long buyerId) {
         this.validator.validateSessionKey(sessionKey);
 

@@ -198,7 +198,8 @@ export const api = createApi({
             query: (data) => ({
                 url: `/offers/accept/${data.data!.offerId}?sessionKey=${data.session}`,
                 method: "PUT",
-                body: data.data!.userId
+                body: data.data!.userId,
+                headers: { "content-type": "application/json" }
             }),
             invalidatesTags: ["Offers"]
         })
